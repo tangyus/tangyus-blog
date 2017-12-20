@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" style="border-top:2px solid #00b5ad; border-bottom: none;">
+<nav class="navbar navbar-default" style="border-top:2px solid #00b5ad; border-bottom: none; background: #f5f5f5;">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Brand</a>
+            <a class="navbar-brand" href="#">tangyus</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -19,13 +19,6 @@
                 <li><a href="#">Link</a></li>
                 <li><a href="#">Link</a></li>
             </ul>
-
-            <form class="navbar-form navbar-left">
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Search">
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Link</a></li>
@@ -41,6 +34,13 @@
                     </ul>
                 </li>
             </ul>
+
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+            </form>
         </div>
     </div>
 </nav>

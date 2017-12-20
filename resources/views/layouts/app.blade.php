@@ -11,7 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<body>
+<body style="background: #ffffff;">
     <div id="app">
         @include('layouts.header')
 
