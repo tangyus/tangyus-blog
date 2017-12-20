@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" style="position: relative; min-height: 100%;">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,13 +11,14 @@
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
-<body style="background: #ffffff;">
+<body>
     <div id="app">
         @include('layouts.header')
 
         <div class="container">
             @yield('content')
         </div>
+        {{--<example-component></example-component>--}}
 
         @include('layouts.footer')
     </div>
