@@ -20,6 +20,9 @@ Vue.use(ElementUI)
  */
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('navbar', require('./dashboard/layouts/Navbar.vue'));
+Vue.component('headbar', require('./dashboard/layouts/Header.vue'));
+Vue.component('main-content', require('./dashboard/layouts/Content.vue'));
 
 const app = new Vue({
     el: '#app'

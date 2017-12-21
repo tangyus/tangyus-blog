@@ -15,9 +15,10 @@
     <div id="app">
         @include('layouts.header')
 
-        <div class="container">
-            @yield('content')
-        </div>
+        {{--<div class="container">--}}
+            {{--@yield('content')--}}
+        {{--</div>--}}
+        <navbar></navbar>
         {{--<example-component></example-component>--}}
 
         @include('layouts.footer')
