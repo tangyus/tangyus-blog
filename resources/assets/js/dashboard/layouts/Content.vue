@@ -1,8 +1,10 @@
 <template>
     <div class="content">
         <div class="content-title">
-            <el-button type="primary" class="pull-right">创建用户<i class="el-icon-edit-outline el-icon-right"></i></el-button>
             <h3>用户管理</h3>
+        </div>
+        <div class="operate">
+            <el-button type="primary">创建用户<i class="el-icon-edit-outline el-icon-right"></i></el-button>
         </div>
         <el-table
                 :data="tableData3"
@@ -33,38 +35,19 @@
             </el-table-column>
         </el-table>
 
-        <div class="block pull-right">
-            <el-pagination
-                    @size-change="handleSizeChange"
-                    @current-change="handleCurrentChange"
-                    :current-page="currentPage4"
-                    :page-sizes="[100, 200, 300, 400]"
-                    :page-size="100"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="400">
-            </el-pagination>
-        </div>
+        <paginate></paginate>
     </div>
 </template>
 
 <script>
-//    import Paginate from './Paginate.vue';
+    import Paginate from './Paginate.vue';
 
     export default {
-        methods: {
-            handleSizeChange(val) {
-                console.log(`每页 ${val} 条`);
-            },
-            handleCurrentChange(val) {
-                console.log(`当前页: ${val}`);
-            }
+        components: {
+            Paginate
         },
         data() {
             return {
-                currentPage1: 5,
-                currentPage2: 5,
-                currentPage3: 5,
-                currentPage4: 4,
                 tableData3: [{
                     date: '2016-05-03',
                     name: '王小虎',
@@ -101,6 +84,7 @@
 
 <style lang="scss" scoped>
     .content {
+        border: 1px solid #F2F6FC;
         position: absolute;
         left: 210px;
         top: 70px;
@@ -112,17 +96,19 @@
             padding-left: 15px;
             padding-top: 10px;
             padding-bottom: 10px;
-
-            button {
-                margin-top: 15px;
-                margin-right: 50px;
-            }
+            border-bottom: 1px solid #DCDFE6;
         }
 
-        el-table {
-            el-table-column {
-                overflow: hidden;
-            }
+        .operate {
+            line-height: 60px;
+            padding-left: 15px;
+            margin: 10px auto;
         }
+    }
+</style>
+
+<style>
+    .el-table__body-wrapper {
+        overflow: hidden;
     }
 </style>

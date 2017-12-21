@@ -1,17 +1,20 @@
 
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * 后台JS
  */
 
 require('./bootstrap');
 
 window.Vue = require('vue');
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI)
+import VueRouter from 'vue-router';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+Vue.use(VueRouter);
+
+import routes from './routes.js';
+import App from './App.vue';
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -19,11 +22,19 @@ Vue.use(ElementUI)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('navbar', require('./dashboard/layouts/Navbar.vue'));
-Vue.component('headbar', require('./dashboard/layouts/Header.vue'));
-Vue.component('main-content', require('./dashboard/layouts/Content.vue'));
+// 初始化路由
+const router = new VueRouter({
+    mode: 'history',
+    linkActiveClass: 'active',
+    routes: routes
+});
+
+// Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
-});
+    router,
+    render: (h) => h(App)
+    // render: h => {
+    //     return h(App)
+    // }
+}).$mount('#app');

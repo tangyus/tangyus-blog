@@ -12,6 +12,12 @@
 */
 
 Route::get('/', function () {
-//    return view('articles.index');
-    return view('admin.index');
+    return view('articles.index');
+});
+
+/* Dashboard Index */
+Route::group(['prefix' => 'admin', /*'middleware' => ['auth', 'admin']*/], function () {
+	Route::get('{path?}', function () {
+		return view('admin.index');
+	})->where('path', '[\/\w\.-]*');
 });

@@ -15,15 +15,13 @@
     <div id="app">
         @include('layouts.header')
 
-        {{--<div class="container">--}}
-            {{--@yield('content')--}}
-        {{--</div>--}}
-        <navbar></navbar>
-        {{--<example-component></example-component>--}}
+        <div class="container">
+            @yield('content')
+        </div>
 
         @include('layouts.footer')
     </div>
 
-    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/home.js') }}"></script>
 </body>
 </html>

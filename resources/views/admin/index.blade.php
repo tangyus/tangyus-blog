@@ -12,15 +12,10 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 <body>
-<div id="app">
+    <div id="app">
 
-    <navbar></navbar>
+    </div>
 
-    <headbar></headbar>
-
-    <main-content></main-content>
-</div>
-
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
