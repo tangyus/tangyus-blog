@@ -16,8 +16,11 @@ Route::get('/', function () {
 });
 
 /* Dashboard Index */
-Route::group(['prefix' => 'admin', /*'middleware' => ['auth', 'admin']*/], function () {
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
 	Route::get('{path?}', function () {
 		return view('admin.index');
 	})->where('path', '[\/\w\.-]*');
 });
+
+// laravel 自带登录注册
+Auth::routes();
