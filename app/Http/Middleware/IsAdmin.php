@@ -16,10 +16,9 @@ class IsAdmin
      */
     public function handle($request, Closure $next)
     {
-		dd(213123);
-		// 未登录或者不是管理员，则不通过验证
-		if (!Auth::guest() || !Auth::user()->is_admin) {
-			redirect('/');
+		// 游客或非管理员登录，则不通过验证
+		if (Auth::guest() || !Auth::user()->is_admin) {
+            abort(404);
 		}
 
         return $next($request);

@@ -11,6 +11,10 @@
                 border
                 style="width: 100%;">
             <el-table-column
+                    type="index"
+                    width="50">
+            </el-table-column>
+            <el-table-column
                     prop="date"
                     label="日期">
             </el-table-column>
@@ -20,7 +24,15 @@
             </el-table-column>
             <el-table-column
                     prop="address"
-                    label="地址">
+                    label="邮箱">
+            </el-table-column>
+            <el-table-column
+                    prop="简介"
+                    label="introduce">
+            </el-table-column>
+            <el-table-column
+                    prop="created_at"
+                    label="注册时间">
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
@@ -51,31 +63,45 @@
                 tableData3: [{
                     date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-02',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-04',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-01',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-08',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-06',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }, {
-                    date: '2016-05-07',
+                    date: '2016-05-03',
                     name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
+                    address: '上海市普陀区金沙江路 1518 弄',
+                    introduce: 'someday means Never',
+                    created_at: '2016-05-03'
                 }]
             };
         }
