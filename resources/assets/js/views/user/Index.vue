@@ -27,8 +27,8 @@
                     label="邮箱">
             </el-table-column>
             <el-table-column
-                    prop="简介"
-                    label="introduce">
+                    prop="introduce"
+                    label="简介">
             </el-table-column>
             <el-table-column
                     prop="created_at"
@@ -38,11 +38,11 @@
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
-                            @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                            @click="editUser(scope.row)">编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                            @click="deleteUser(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -61,42 +61,49 @@
         data() {
             return {
                 tableData3: [{
+                    id: 1,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 2,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 3,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 4,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 5,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 7,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
                 }, {
+                    id: 8,
                     date: '2016-05-03',
                     name: '王小虎',
                     address: '上海市普陀区金沙江路 1518 弄',
@@ -104,6 +111,23 @@
                     created_at: '2016-05-03'
                 }]
             };
+        },
+        created() {
+            this.loadUser();
+        },
+        methods: {
+            loadUser: function () {
+                this.$http.get('/api/user')
+                        .then(function () {
+
+                        })
+            },
+            editUser: function (row) {
+                this.$router.push({path:'users/' + row.id + '/edit'});
+            },
+            deleteUser: function (row) {
+                console.log(row.id);
+            }
         }
     }
 </script>

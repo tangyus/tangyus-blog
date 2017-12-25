@@ -17,8 +17,7 @@ Route::group([
 	'middleware' => ['auth:api', 'admin'],
 	'namespace' => 'Api'
 ], function () {
-//	Route::get('/admin', 'IndexController@index');
-	Route::get('/admin', function () {
-		dd(231321);
-	});
+	Route::get('/admin', 'IndexController@index');
+
+	Route::resource('user', 'UserController', ['except' => ['show']]);
 });

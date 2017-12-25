@@ -9,9 +9,13 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import ElementUI from 'element-ui';
+import axios from 'axios';
 import 'element-ui/lib/theme-chalk/index.css';
+
 Vue.use(ElementUI);
 Vue.use(VueRouter);
+
+Vue.prototype.$http = axios;
 
 import routes from './routes.js';
 import App from './App.vue';
