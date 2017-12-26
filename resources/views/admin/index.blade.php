@@ -10,12 +10,25 @@
     <title>@yield('title', 'tangyus') - tangyus</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}"
+        }
+
+        window.User = {!! Auth::user() !!}
+
+                window.Language = "{{ config('app.locale') }}"
+    </script>
 </head>
 <body>
     <div id="app">
 
     </div>
 
-    <script type="text/javascript" src="{{ mix('js/app.js') }}"></script>
+    <script src="/js/manifest.js"></script>
+    <script src="/js/vendor.js"></script>
+    <script src="/js/app.js"></script>
+    {{--<script type="text/javascript" src="{{ mix('js/app.js') }}"></script>--}}
 </body>
 </html>

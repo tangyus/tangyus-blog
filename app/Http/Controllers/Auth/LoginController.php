@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -36,4 +39,44 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    /**
+     * 获取登录TOKEN
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+//    public function token(Request $request)
+//    {
+//        dd($request);
+//        $username = $request->get('username');
+//        $user = User::Where('email', $username)->first();
+//
+//        if ($user && ($user->status == 0)) {
+//            throw  new UnauthorizedHttpException('', '账号已被禁用');
+//        }
+//
+//        $client = new Client();
+//        try {
+//            $request = $client->request('POST', request()->root() . '/api/oauth/token', [
+//                'form_params' => config('passport') + $request->only(array_keys($request->rules()))
+//            ]);
+//
+//        } catch (RequestException $e) {
+//            throw  new UnauthorizedHttpException('', '账号验证失败');
+//        }
+//
+//        if ($request->getStatusCode() == 401) {
+//            throw  new UnauthorizedHttpException('', '账号验证失败');
+//        }
+//        return response()->json($request->getBody()->getContents());
+//    }
+
+//    public function logout()
+//    {
+//        if (Auth::guard('api')->check()) {
+//            Auth::guard('api')->user()->token()->delete();
+//        }
+//
+//        return response()->json(['message' => '登出成功', 'status_code' => 200, 'data' => null]);
+//    }
 }

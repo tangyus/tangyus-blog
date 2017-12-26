@@ -22,6 +22,23 @@
         @include('layouts.footer')
     </div>
 
+    <script type="text/javascript">
+        var username = $('#username').val();
+        var password = $('#password').val();
+
+        $.ajax({
+            type: 'post',
+            url: '/oauth/token',
+            dataType: 'json',
+            data: {
+                'grant_type': 'password',
+                'client_id': ''
+            }
+        })
+    </script>
+
+    <script src="/js/manifest.js"></script>
+    <script src="/js/vendor.js"></script>
     <script type="text/javascript" src="{{ mix('js/home.js') }}"></script>
 </body>
 </html>

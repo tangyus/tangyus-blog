@@ -15,7 +15,18 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 Vue.use(VueRouter);
 
-Vue.prototype.$http = axios;
+/**
+ * Create Axios
+ */
+export const http = axios.create({
+    baseURL: '/api',
+})
+
+http.defaults.headers.common = {
+    'X-CSRF-TOKEN': window.Laravel.csrfToken,
+    'X-Requested-With': 'XMLHttpRequest'
+};
+Vue.prototype.$http = http;
 
 import routes from './routes.js';
 import App from './App.vue';

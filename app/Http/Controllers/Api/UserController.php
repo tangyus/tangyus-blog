@@ -13,7 +13,7 @@ class UserController extends Controller
 
 	public function __construct(UserRepository $user)
 	{
-		parent::__construct();
+//		parent::__construct();
 
 		$this->user = $user;
 	}
@@ -22,7 +22,6 @@ class UserController extends Controller
 	{
 		$users = $this->user->page();
 
-		dd($users);
 		return Response::json($users);
 	}
 }

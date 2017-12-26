@@ -109,15 +109,24 @@
                     address: '上海市普陀区金沙江路 1518 弄',
                     introduce: 'someday means Never',
                     created_at: '2016-05-03'
-                }]
+                }],
+                data: {
+                    name: 'tangyus app',
+                    redirect: 'http://tangyus.test'
+                }
             };
         },
         created() {
             this.loadUser();
+
+//            this.$http.post('/oauth/clients', this.data)
+//                    .then(function () {
+//
+//                    })
         },
         methods: {
             loadUser: function () {
-                this.$http.get('/api/user')
+                this.$http.get('/user')
                         .then(function () {
 
                         })

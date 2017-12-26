@@ -14,4 +14,7 @@ class DatabaseSeeder extends Seeder
          $this->call(AdminSeeder::class);
          $this->call(UserTableSeeder::class);
     }
+
+    // Class ***TableSeeder does not exist
+    // 解决方案 composer dump-autoload
 }
