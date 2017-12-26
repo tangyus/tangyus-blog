@@ -25,6 +25,7 @@
 <style lang="scss" scoped>
     #page-content {
         border: 1px solid #F2F6FC;
+        border-bottom: none;
         position: absolute;
         left: 210px;
         top: 70px;

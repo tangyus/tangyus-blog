@@ -7,7 +7,7 @@
             <router-link to="/admin/users/create" class="btn btn-primary">创建用户<i class="el-icon-edit-outline el-icon-right"></i></router-link>
         </div>
         <el-table
-                :data="tableData3"
+                :data="userList"
                 border
                 style="width: 100%;">
             <el-table-column
@@ -15,15 +15,11 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="date"
-                    label="日期">
-            </el-table-column>
-            <el-table-column
                     prop="name"
                     label="姓名">
             </el-table-column>
             <el-table-column
-                    prop="address"
+                    prop="email"
                     label="邮箱">
             </el-table-column>
             <el-table-column
@@ -34,7 +30,7 @@
                     prop="created_at"
                     label="注册时间">
             </el-table-column>
-            <el-table-column label="操作">
+            <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
@@ -47,95 +43,66 @@
             </el-table-column>
         </el-table>
 
-        <paginate></paginate>
+        <div class="block" v-if="totalPage >= 1">
+            <el-pagination
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="currentPage"
+                    :page-size="pageSize"
+                    layout="total, prev, pager, next"
+                    :total="total">
+            </el-pagination>
+        </div>
     </div>
 </template>
 
 <script>
-    import Paginate from '../../dashboard/layouts/Paginate.vue';
-
     export default {
-        components: {
-            Paginate
-        },
         data() {
             return {
-                tableData3: [{
-                    id: 1,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 2,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 3,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 4,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 5,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 7,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }, {
-                    id: 8,
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    introduce: 'someday means Never',
-                    created_at: '2016-05-03'
-                }],
-                data: {
-                    name: 'tangyus app',
-                    redirect: 'http://tangyus.test'
-                }
-            };
+                userList: undefined,
+                currentPage: 1,
+                totalPage: 0,
+                total: 0,
+                pageSize: 10
+            }
         },
         created() {
             this.loadUser();
-
-//            this.$http.post('/oauth/clients', this.data)
-//                    .then(function () {
-//
-//                    })
         },
         methods: {
-            loadUser: function () {
-                this.$http.get('/user')
-                        .then(function () {
-
+            // 加载用户列表
+            loadUser: function (page) {
+                var self = this;
+                var url = page ? '/user?page=' + page : '/user';
+                this.$http.get(url)
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.userList = response.data.data.data;
+                                self.totalPage = response.data.data.last_page;
+                                self.total = response.data.data.total;
+                                self.pageSize = response.data.data.per_page;
+                            }
                         })
             },
             editUser: function (row) {
                 this.$router.push({path:'users/' + row.id + '/edit'});
             },
             deleteUser: function (row) {
-                console.log(row.id);
+                var self = this;
+                this.$http.post('/user/delete/' + row.id)
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.loadUser(self.currentPage);
+                            } else {
+                                alert(response.data.message);
+                            }
+                        })
+            },
+
+            // 翻页
+            handleCurrentChange(val) {
+                this.currentPage = val;
+                this.loadUser(val);
             }
         }
     }
@@ -160,6 +127,12 @@
             background-color: #409eff;
             border-color: #409eff;
         }
+    }
+
+    .block {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 75px;
     }
 </style>
 

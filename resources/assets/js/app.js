@@ -26,6 +26,25 @@ http.defaults.headers.common = {
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'
 };
+
+// 响应时拦截
+http.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+		const { response } = error;
+
+		if ([401].indexOf(response.status) >= 0) {
+				if (response.status == 401 && response.data.error.message != 'Unauthorized' ) {
+						return Promise.reject(response);
+				}
+
+				console.log(response);
+				window.location = '/login';
+		}
+
+    // 当响应异常时做一些处理
+    return Promise.reject(error);
+});
 Vue.prototype.$http = http;
 
 import routes from './routes.js';
@@ -43,8 +62,6 @@ const router = new VueRouter({
     linkActiveClass: 'active',
     routes: routes
 });
-
-// Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
     router,

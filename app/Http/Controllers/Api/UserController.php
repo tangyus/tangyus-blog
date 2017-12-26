@@ -13,8 +13,6 @@ class UserController extends Controller
 
 	public function __construct(UserRepository $user)
 	{
-//		parent::__construct();
-
 		$this->user = $user;
 	}
 
@@ -22,6 +20,33 @@ class UserController extends Controller
 	{
 		$users = $this->user->page();
 
-		return Response::json($users);
+		if (!empty($users)) {
+			$data = ['success' => true, 'message' => '获取用户数据成功', 'data' => $users];
+		} else {
+			$data = ['success' => false, 'message' => '获取用户数据失败', 'data' => []];
+		}
+		return Response::json($data);
+	}
+
+	public function edit($id)
+	{
+		$user = $this->user->getById($id);
+
+		if (!empty($user)) {
+			$data = ['success' => true, 'message' => '获取用户数据成功', 'data' => $user];
+		} else {
+			$data = ['success' => false, 'message' => '获取用户数据失败', 'data' => []];
+		}
+		return Response::json($data);
+	}
+
+	public function softDelete($id)
+	{
+		if ($this->user->update($id, ['status' => '0'])) {
+			$data = ['success' => true, 'message' => '删除用户成功'];
+		} else {
+			$data = ['success' => false, 'message' => '删除用户失败'];
+		}
+		return Response::json($data);
 	}
 }

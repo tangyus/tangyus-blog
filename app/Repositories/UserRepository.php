@@ -26,4 +26,17 @@ class UserRepository
 	{
 		return $this->model->orderBy($sortColumn, $sort)->paginate($number);
 	}
+
+	public function getById($id)
+	{
+		return $this->model->find($id);
+	}
+
+	public function update($id, $input)
+	{
+		$this->model = $this->model->findOrFail($id);
+		$this->model->fill($input);
+
+		return $this->model->save();
+	}
 }

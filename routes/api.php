@@ -20,4 +20,5 @@ Route::group([
 	Route::get('/admin', 'IndexController@index');
 
 	Route::resource('user', 'UserController', ['except' => ['show']]);
+	Route::post('user/delete/{user}', 'UserController@softDelete');
 });
