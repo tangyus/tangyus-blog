@@ -39,4 +39,11 @@ class UserRepository
 
 		return $this->model->save();
 	}
+
+    public function store($input)
+    {
+        $this->model->fill($input);
+
+        return $this->model->save();
+	}
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,10 @@ class UserController extends Controller
 		$this->user = $user;
 	}
 
+    /**
+     * 用户管理列表
+     * @return mixed
+     */
 	public function index()
 	{
 		$users = $this->user->page();
@@ -28,6 +33,11 @@ class UserController extends Controller
 		return Response::json($data);
 	}
 
+    /**
+     * 编辑用户
+     * @param $id
+     * @return mixed
+     */
 	public function edit($id)
 	{
 		$user = $this->user->getById($id);
@@ -40,6 +50,11 @@ class UserController extends Controller
 		return Response::json($data);
 	}
 
+    /**
+     * 软删除用户
+     * @param $id
+     * @return mixed
+     */
 	public function softDelete($id)
 	{
 		if ($this->user->update($id, ['status' => '0'])) {
@@ -48,5 +63,39 @@ class UserController extends Controller
 			$data = ['success' => false, 'message' => '删除用户失败'];
 		}
 		return Response::json($data);
+	}
+
+    /**
+     * 更新用户信息
+     * @param Request $request
+     * @param $id
+     */
+    public function update(Request $request, $id)
+    {
+        if ($this->user->update($id, $request->all())) {
+            $data = ['success' => true, 'message' => '更新用户信息成功'];
+        } else {
+            $data = ['success' => false, 'message' => '更新用户信息失败'];
+        }
+        return Response::json($data);
+	}
+
+    /**
+     * 创建用户
+     * @param UserRequest $request
+     * @return mixed
+     */
+    public function store(UserRequest $request)
+    {
+        $input = $request->all();
+        unset($input['confirm_password']);
+        $input = array_merge($input, ['remember_token' => str_random(10)]);
+
+        if ($this->user->store($input)) {
+            $data = ['success' => true, 'message' => '创建用户成功'];
+        } else {
+            $data = ['success' => false, 'message' => '创建用户失败'];
+        }
+        return Response::json($data);
 	}
 }

@@ -4,35 +4,42 @@
             <router-link to="/admin/users" class="btn btn-primary pull-right">返回</router-link>
             <h3>创建用户</h3>
         </div>
-        <el-row :gutter="20">
+        <el-row>
             <el-col :span="8" :offset="8">
                 <div class="user-default-img">
                     <img src="/image/avatar.jpg" alt="小兔子，可爱吧@!!!" width="100" height="100">
                 </div>
-                <el-form ref="form" :model="form" label-width="80px">
-                    <el-form-item label="用户名">
-                        <el-input v-model="form.name" placeholder="请输入用户名" clearable></el-input>
+                <el-form ref="user" :model="user" :rules="rules" label-width="80px" label-position="right">
+                    <el-form-item label="用户名" prop="name">
+                        <el-input v-model="user.name" placeholder="请输入用户名" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="邮箱">
-                        <el-input v-model="form.email" placeholder="请输入邮箱" clearable></el-input>
+                    <el-form-item label="邮箱" prop="email">
+                        <el-input v-model="user.email" placeholder="请输入邮箱" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="密码">
-                        <el-input v-model="form.password" placeholder="请输入密码" clearable></el-input>
+                    <el-form-item label="密码" prop="password">
+                        <el-input type="password" v-model="user.password" placeholder="请输入密码" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码">
-                        <el-input v-model="form.confirm_password" placeholder="请确认密码" clearable></el-input>
+                    <el-form-item label="确认密码" prop="confirm_password">
+                        <el-input type="password" v-model="user.confirm_password" placeholder="请确认密码" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="管理员">
-                        <el-radio-group v-model="form.is_admin">
-                            <el-radio label="1" disabled>是</el-radio>
+                        <el-radio-group v-model="user.is_admin">
+                            <el-radio label="1">是</el-radio>
                             <el-radio label="0">否</el-radio>
                         </el-radio-group>
                     </el-form-item>
+                    <el-form-item label="状态">
+                        <el-switch
+                                v-model="user.status"
+                                active-value="1"
+                                inactive-value="0">
+                        </el-switch>
+                    </el-form-item>
                     <el-form-item label="简介">
-                        <el-input type="textarea" :rows="3" placeholder="请输入一句话简介" v-model="form.intro" clearable></el-input>
+                        <el-input type="textarea" :rows="3" placeholder="请输入一句话简介" v-model="user.intro" clearable></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                        <el-button type="primary" @click="createUser">立即创建</el-button>
                         <router-link to="/admin/users" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
@@ -45,19 +52,48 @@
     export default {
         data() {
             return {
-                form: {
+                email: '/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/',
+                user: {
+                    status: '1',
+                    is_admin: '0',
+                    password: '',
                     name: '',
                     email: '',
-                    password: '',
-                    confirm_password: '',
-                    is_admin: '0',
-                    intro: ''
+                    confirm_password: ''
+                },
+                rules: {
+                    name: [
+                        {required: true, message: '请输入用户名', trigger: 'blur'},
+                        {min: 3, max: 5, message: '用户名长度在3 到 5个字符', trigger: 'blur'}
+                    ],
+                    email: [
+                        {required: true, message: '请输入用户邮箱', trigger: 'blur'},
+                        {pattern: '/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/', message: '邮箱格式不正确', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {min: 6, max: 12, message: '密码长度在6 到 12个字符', trigger: 'blur'}
+                    ],
+                    confirm_password: [
+                        {required: true, message: '两次输入的密码不一致', trigger: 'blur'}
+                    ]
                 }
             }
         },
         methods: {
-            onSubmit() {
-                console.log('submit!');
+            createUser() {
+                var self = this;
+                this.$http.post('/user', self.user)
+                        .then(function (response) {
+                            self.$message({
+                                message: response.data.message,
+                                type: response.data.success ? 'success' : 'error',
+                                showClose: true
+                            });
+                            this.$router.push({
+                                path: 'users'
+                            });
+                        })
             }
         }
     }

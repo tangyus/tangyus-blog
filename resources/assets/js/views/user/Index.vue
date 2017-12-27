@@ -30,10 +30,24 @@
                     prop="created_at"
                     label="注册时间">
             </el-table-column>
+            <el-table-column
+                    label="帐号状态"
+                    width="100">
+                <template slot-scope="scope">
+                    <el-switch
+                            v-model="scope.row.status"
+                            active-value="1"
+                            inactive-value="0"
+                            active-color="#13ce66"
+                            disabled>
+                    </el-switch>
+                </template>
+            </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
+                            type="primary"
                             @click="editUser(scope.row)">编辑</el-button>
                     <el-button
                             size="mini"
@@ -85,7 +99,9 @@
                         })
             },
             editUser: function (row) {
-                this.$router.push({path:'users/' + row.id + '/edit'});
+                this.$router.push({
+                    path:'users/' + row.id + '/edit'
+                });
             },
             deleteUser: function (row) {
                 var self = this;
@@ -93,9 +109,12 @@
                         .then(function (response) {
                             if (response.data.success) {
                                 self.loadUser(self.currentPage);
-                            } else {
-                                alert(response.data.message);
                             }
+                            self.$message({
+                                message: response.data.message,
+                                type: response.data.success ? 'success' : 'error',
+                                showClose: true
+                            });
                         })
             },
 

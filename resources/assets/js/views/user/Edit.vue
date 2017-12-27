@@ -4,7 +4,7 @@
             <router-link to="/admin/users" class="btn btn-primary pull-right">返回</router-link>
             <h3>编辑用户</h3>
         </div>
-        <el-row :gutter="20">
+        <el-row>
             <el-col :span="8" :offset="8">
                 <div class="user-default-img">
                     <img src="/image/avatar.jpg" alt="小兔子，可爱吧@!!!" width="100" height="100">
@@ -19,14 +19,21 @@
                     <el-form-item label="管理员">
                         <el-radio-group v-model="user.is_admin">
                             <el-radio label="1" disabled>是</el-radio>
-                            <el-radio label="0">否</el-radio>
+                            <el-radio label="0" disabled>否</el-radio>
                         </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="状态">
+                        <el-switch
+                                v-model="user.status"
+                                active-value="1"
+                                inactive-value="0">
+                        </el-switch>
                     </el-form-item>
                     <el-form-item label="简介">
                         <el-input type="textarea" :rows="3" placeholder="请输入一句话简介" v-model="user.introduce" clearable></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSubmit">保存修改</el-button>
+                        <el-button type="primary" @click="updateUser">保存修改</el-button>
                         <router-link to="/admin/users" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
@@ -39,7 +46,7 @@
     export default {
         data() {
             return {
-                user: {}
+                user: {},
             }
         },
         created() {
@@ -55,8 +62,16 @@
                             }
                         })
             },
-            onSubmit() {
-                console.log('submit!');
+            updateUser() {
+                var self = this;
+                this.$http.patch('/user/' + this.$route.params.id, self.user)
+                        .then(function (response) {
+                            self.$message({
+                                message: response.data.message,
+                                type: response.data.success ? 'success' : 'error',
+                                showClose: true
+                            });
+                        })
             }
         }
     }
@@ -79,8 +94,12 @@
         }
     }
 
+    .el-alert {
+        line-height: 60px;
+    }
+
     .el-row {
-        margin-top: 10px;
+        margin: 10px 0;
 
         .user-default-img {
             margin: 30px auto;
