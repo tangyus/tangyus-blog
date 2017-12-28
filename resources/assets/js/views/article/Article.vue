@@ -8,7 +8,7 @@
         </div>
 
         <el-table
-                :data="tableData"
+                :data="articleList"
                 border
                 style="width: 100%;">
             <el-table-column
@@ -16,27 +16,48 @@
                     width="50">
             </el-table-column>
             <el-table-column
-                    prop="name"
+                    prop="title"
+                    label="文章标题">
+            </el-table-column>
+            <el-table-column
+                    prop="category_id"
                     label="分类名称">
             </el-table-column>
             <el-table-column
-                    prop="date"
-                    label="邮箱">
+                    prop="view_count"
+                    label="浏览次数">
             </el-table-column>
             <el-table-column
-                    prop="address"
-                    label="简介">
+                    width="100"
+                    label="是否原创">
+                <template slot-scope="scope">
+                    <el-switch
+                            v-model="scope.row.is_original"
+                            active-value="1"
+                            inactive-value="0"
+                            active-color="#13ce66"
+                            disabled>
+                    </el-switch>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="status"
+                    label="发表状态">
+            </el-table-column>
+            <el-table-column
+                    prop="published_at"
+                    label="发表时间">
             </el-table-column>
             <el-table-column label="操作" width="200">
                 <template slot-scope="scope">
                     <el-button
                             size="mini"
                             type="primary"
-                            @click="editUser(scope.row)">编辑</el-button>
+                            @click="editArticle(scope.row)">编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="deleteUser(scope.row)">删除</el-button>
+                            @click="deleteArticle(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -57,28 +78,40 @@
     export default {
         data () {
             return {
-                tableData: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }, {
-                    date: '2016-05-04',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1517 弄'
-                }, {
-                    date: '2016-05-01',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1519 弄'
-                }, {
-                    date: '2016-05-03',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1516 弄'
-                }],
+                articleList: [],
                 currentPage: 1,
                 totalPage: 0,
                 total: 0,
                 pageSize: 10
             }
+        },
+        created () {
+            this.loadArticle();
+        },
+        methods: {
+            // 加载用户列表
+            loadArticle: function (page) {
+                var self = this;
+                var url = page ? '/article?page=' + page : '/article';
+                this.$http.get(url)
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.articleList = response.data.data.data;
+                                self.totalPage = response.data.data.last_page;
+                                self.total = response.data.data.total;
+                                self.pageSize = response.data.data.per_page;
+                            }
+                        })
+            },
+            // 编辑文章
+            editArticle: function (row) {
+                this.$router.push({
+                    path: 'articles/' + row.id + '/edit'
+                });
+            }
         }
     }
 </script>
+
+<style>
+</style>

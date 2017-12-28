@@ -70,7 +70,7 @@ export default [
 						component: ArticleCreate
 					},
 					{
-						path: 'edit',
+						path: ':id/edit',
 						component: ArticleEdit
 					},
 				]

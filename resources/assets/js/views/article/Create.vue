@@ -32,6 +32,10 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="文章内容">
+                        <el-input type="textarea" :rows="10" placeholder="请输入一句话简介" v-model="user.address"
+                                  clearable></el-input>
+                    </el-form-item>
                     <el-form-item label="文章图片">
                         <el-upload
                                 class="upload-demo"
@@ -46,10 +50,6 @@
                             <el-button size="small" type="primary">点击上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
-                    </el-form-item>
-                    <el-form-item label="文章内容">
-                        <el-input type="textarea" :rows="10" placeholder="请输入一句话简介" v-model="user.address"
-                                  clearable></el-input>
                     </el-form-item>
                     <el-form-item label="是否原创">
                         <el-switch
@@ -76,7 +76,6 @@
 </template>
 
 <script>
-
     export default {
         data() {
             return {
@@ -163,10 +162,14 @@
                     }
 
                     .el-form-item__content {
-                        width: 100%;
 
-                        .input[type="file"] {
-                            display: none!important;
+                        .el-upload {
+                            .input[type="file"] {
+                                display: none!important;
+                            }
+                        }
+                        .el-select {
+                            width: 100%;
                         }
                     }
                 }

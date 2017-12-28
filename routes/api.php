@@ -21,4 +21,6 @@ Route::group([
 
 	Route::resource('user', 'UserController', ['except' => ['show', 'destroy', 'create']]);
 	Route::post('user/delete/{user}', 'UserController@softDelete');
+
+	Route::resource('article', 'ArticleController', ['except' => ['show', 'destroy', 'create']]);
 });

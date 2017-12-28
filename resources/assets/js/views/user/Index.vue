@@ -100,7 +100,7 @@
             },
             editUser: function (row) {
                 this.$router.push({
-                    path:'users/' + row.id + '/edit'
+                    path: 'users/' + row.id + '/edit'
                 });
             },
             deleteUser: function (row) {
