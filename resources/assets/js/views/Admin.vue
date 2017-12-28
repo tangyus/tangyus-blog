@@ -22,7 +22,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     #page-content {
         border: 1px solid #F2F6FC;
         border-bottom: none;
@@ -31,5 +31,35 @@
         top: 70px;
         bottom: 0;
         right: 0;
+
+        .content-title {
+            min-height: 50px;
+            padding-left: 15px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #DCDFE6;
+        }
+
+        .operate {
+            line-height: 60px;
+            padding-left: 15px;
+            margin: 10px auto;
+
+            .btn-primary {
+                color: #fff;
+                background-color: #409eff;
+                border-color: #409eff;
+            }
+        }
+
+        .block {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 75px;
+        }
+    }
+
+    .el-table__body-wrapper {
+        overflow: hidden;
     }
 </style>

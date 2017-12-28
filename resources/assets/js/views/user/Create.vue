@@ -109,12 +109,6 @@
 
 <style lang="scss" scoped>
     .content-title {
-        min-height: 50px;
-        padding-left: 15px;
-        padding-top: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #DCDFE6;
-
         .btn-primary {
             color: #fff;
             background-color: #409eff;
