@@ -88,7 +88,8 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         $input = $request->all();
-        unset($input['confirm_password']);
+        unset($input['password_confirmation']);
+		$input['password'] = bcrypt($input['password']);
         $input = array_merge($input, ['remember_token' => str_random(10)]);
 
         if ($this->user->store($input)) {

@@ -19,8 +19,8 @@
                     <el-form-item label="密码" prop="password">
                         <el-input type="password" v-model="user.password" placeholder="请输入密码" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码" prop="confirm_password">
-                        <el-input type="password" v-model="user.confirm_password" placeholder="请确认密码" clearable></el-input>
+                    <el-form-item label="确认密码" prop="password_confirmation">
+                        <el-input type="password" v-model="user.password_confirmation" placeholder="请确认密码" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="管理员">
                         <el-radio-group v-model="user.is_admin">
@@ -40,7 +40,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="createUser">立即创建</el-button>
-                        <router-link to="/admin/users" class="el-button el-button--default">取消</router-link>
+                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -52,30 +52,29 @@
     export default {
         data() {
             return {
-                email: '/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/',
                 user: {
                     status: '1',
                     is_admin: '0',
                     password: '',
                     name: '',
                     email: '',
-                    confirm_password: ''
+                    password_confirmation: ''
                 },
                 rules: {
                     name: [
                         {required: true, message: '请输入用户名', trigger: 'blur'},
-                        {min: 3, max: 5, message: '用户名长度在3 到 5个字符', trigger: 'blur'}
+                        {min: 3, max: 25, message: '用户名长度在3 到 5个字符', trigger: 'blur'}
                     ],
                     email: [
                         {required: true, message: '请输入用户邮箱', trigger: 'blur'},
-                        {pattern: '/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/', message: '邮箱格式不正确', trigger: 'blur'}
+                        // {pattern: "/^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+\.){1,63}[a-z0-9]+$/", message: '邮箱格式不正确', trigger: 'blur'}
                     ],
                     password: [
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         {min: 6, max: 12, message: '密码长度在6 到 12个字符', trigger: 'blur'}
                     ],
-                    confirm_password: [
-                        {required: true, message: '两次输入的密码不一致', trigger: 'blur'}
+                    password_confirmation: [
+                        {required: true, message: '请输入确认密码', trigger: 'blur'}
                     ]
                 }
             }
@@ -83,17 +82,26 @@
         methods: {
             createUser() {
                 var self = this;
-                this.$http.post('/user', self.user)
-                        .then(function (response) {
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                            this.$router.push({
-                                path: 'users'
-                            });
-                        })
+                this.$refs['user'].validate((valid) => {
+                    if (valid) {
+                        this.$http.post('/user', self.user)
+                                .then(function (response) {
+                                    self.$message({
+                                        message: response.data.message,
+                                        type: response.data.success ? 'success' : 'error',
+                                        showClose: true
+                                    });
+                                    self.$router.push({
+                                        path: 'users'
+                                    });
+                                })
+                    } else {
+                        return false;
+                    }
+                });
+            },
+            resetForm() {
+                this.$refs['user'].resetFields();
             }
         }
     }

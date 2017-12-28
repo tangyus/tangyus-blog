@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +15,57 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(App\Models\User::class, function (Faker $faker) {
-    static $password;
+	static $password;
 
-    return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+	return [
+		'name' => $faker->name,
+		'email' => $faker->unique()->safeEmail,
+		'password' => $password ?: $password = bcrypt('secret'),
+		'remember_token' => str_random(10),
 		'avatar' => null,
-		'introduce' => $faker->sentence(),
-		'created_at' => \Carbon\Carbon::now(),
-		'updated_at' => \Carbon\Carbon::now()
-    ];
+		'introduce' => $faker->sentence()
+	];
+});
+
+$factory->define(App\Models\Category::class, function (Faker $faker) {
+	return [
+		'name' => $faker->unique()->name,
+		'desc' => $faker->sentence
+	];
+});
+
+$factory->define(App\Models\Article::class, function (Faker $faker) {
+	$category_ids = \App\Models\Category::pluck('id')->random();
+	$paragraph = $faker->paragraph(4);
+	return [
+		'title' => $faker->sentence,
+		'content' => $paragraph,
+		'category_id' => $category_ids,
+		'author_id' => 1,
+		'status' => mt_rand(0, 1) ? 20 : 10,
+		'is_original' => mt_rand(0, 1) ? '1' : '0',
+		'article_image' => $faker->image(),
+		'published_at' => $faker->dateTimeBetween($startDate = '-2 months', $endDate = 'now'),
+		'created_at' => Carbon::now(),
+		'updated_at' => Carbon::now()
+	];
+});
+
+$factory->define(App\Models\Tag::class, function (Faker $faker) {
+	$category_ids = \App\Models\Category::pluck('id')->random();
+	$article_ids = \App\Models\Category::pluck('id')->random();
+
+	return [
+		'name' => $faker->unique()->name,
+		'category_id' => $category_ids,
+		'article_id' => $article_ids
+	];
+});
+
+$factory->define(App\Models\Link::class, function (Faker $faker) {
+	return [
+		'name' => $faker->unique()->name,
+		'site' => $faker->url,
+		'link_image' => $faker->imageUrl(200, 200)
+	];
 });
