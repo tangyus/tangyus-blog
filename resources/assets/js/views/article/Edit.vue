@@ -11,24 +11,22 @@
                         <el-input v-model="article.title" placeholder="请输入标题" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="文章分类">
-                        <!--<el-input v-model="user.date" placeholder="请选择分类" clearable></el-input>-->
-                        <el-select v-model="value4" clearable placeholder="请选择分类">
+                        <el-select v-model="article.category_id" clearable placeholder="请选择分类">
                             <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in categoryList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="文章标签">
-                        <!--<el-input v-model="user.date" placeholder="打标签" clearable></el-input>-->
-                        <el-select v-model="value5" multiple placeholder="请选择">
+                        <el-select v-model="articleTags" multiple placeholder="请选择文章标签">
                             <el-option
-                                    v-for="item in tags"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in tagList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -60,14 +58,15 @@
                     </el-form-item>
                     <el-form-item label="是否草稿">
                         <el-switch
-                                v-model="value2"
+                                v-model="article.status"
+                                active-value="10"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949">
                         </el-switch>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="updateUser">保存修改</el-button>
-                        <router-link to="/admin/categories" class="el-button el-button--default">取消</router-link>
+                        <el-button type="primary" @click="updateArticle">保存修改</el-button>
+                        <router-link to="/admin/articles" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -79,8 +78,11 @@
     export default {
         data() {
             return {
-                article: [],
-                fileList2: [
+                article: {},
+                categoryList: [],
+                tagList: [],
+                articleTags: [],
+                fileList: [
                     {
                         name: 'food.jpeg',
                         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -89,38 +91,19 @@
                         name: 'food2.jpeg',
                         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
                 ],
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }],
-                value4: '',
-                tags: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
-                value5: [],
             }
         },
         created () {
             this.loadArticle();
+            this.loadCategory();
+        },
+        watch: {
+            article: function (newVal) {
+                var self = this;
+                if (newVal.category_id) {
+                    self.loadTag();
+                }
+            }
         },
         methods: {
             loadArticle: function () {
@@ -129,8 +112,34 @@
                         .then(function (response) {
                             if (response.data.success) {
                                 self.article = response.data.data;
+                                for (var i = 0; i < self.article.article_tags.length; i++) {
+                                    self.articleTags.push(self.article.article_tags.tag_id);
+                                }
+                                console.log(self.article.article_tags);
                             }
                         })
+            },
+            loadCategory: function () {
+                var self = this;
+                this.$http.post('/category/all')
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.categoryList = response.data.data;
+                            }
+                        })
+            },
+            loadTag: function () {
+                var self = this;
+                this.$http.post('/tag/all', {category_id: self.article.category_id})
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.tagList = response.data.data;
+                                console.log(self.tagList);
+                            }
+                        })
+            },
+            updateArticle () {
+                console.log(1);
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);

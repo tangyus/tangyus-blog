@@ -108,6 +108,9 @@
                 this.$router.push({
                     path: 'articles/' + row.id + '/edit'
                 });
+            },
+            handleCurrentChange () {
+                this.loadArticle(this.currentPage);
             }
         }
     }

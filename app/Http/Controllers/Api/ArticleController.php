@@ -31,8 +31,6 @@ class ArticleController extends Controller
 	public function edit($id)
 	{
 		$article = $this->article->getById($id);
-		$article['category'] = $article->category();
-		$article['tags'] = $article->tags();
 
 		if (!empty($article)) {
 			$data = ['success' => true, 'message' => '获取文章数据成功', 'data' => $article];

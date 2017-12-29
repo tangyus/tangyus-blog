@@ -23,4 +23,7 @@ Route::group([
 	Route::post('user/delete/{user}', 'UserController@softDelete');
 
 	Route::resource('article', 'ArticleController', ['except' => ['show', 'destroy', 'create']]);
+
+    Route::post('category/all', 'CategoryController@allCategory');
+    Route::post('tag/all', 'TagController@allTag');
 });

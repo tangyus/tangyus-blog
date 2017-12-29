@@ -53,13 +53,21 @@ $factory->define(App\Models\Article::class, function (Faker $faker) {
 
 $factory->define(App\Models\Tag::class, function (Faker $faker) {
 	$category_ids = \App\Models\Category::pluck('id')->random();
-	$article_ids = \App\Models\Category::pluck('id')->random();
 
 	return [
 		'name' => $faker->unique()->name,
 		'category_id' => $category_ids,
-		'article_id' => $article_ids
 	];
+});
+
+$factory->define(App\Models\ArticleTag::class, function (Faker $faker) {
+    $article_ids = \App\Models\Article::pluck('id')->random();
+    $tag_ids = \App\Models\Tag::pluck('id')->random();
+
+    return [
+        'tag_id' => $tag_ids,
+        'article_id' => $article_ids,
+    ];
 });
 
 $factory->define(App\Models\Link::class, function (Faker $faker) {

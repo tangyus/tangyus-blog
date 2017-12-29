@@ -17,7 +17,6 @@ class CreateTagsTable extends Migration
             $table->increments('id');
 			$table->string('name', 32)->unique();
 			$table->unsignedInteger('category_id');
-			$table->unsignedInteger('article_id');
 
 			$table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

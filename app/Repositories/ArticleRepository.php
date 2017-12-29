@@ -22,6 +22,6 @@ class ArticleRepository
 
 	public function getById($id)
 	{
-		return $this->model->find($id);
+		return $this->model->with(['category', 'articleTags'])->find($id);
 	}
 }
