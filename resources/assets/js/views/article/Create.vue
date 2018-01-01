@@ -6,34 +6,32 @@
         </div>
         <el-row>
             <el-col :span="16" :offset="4">
-                <el-form ref="user" :model="user" label-width="80px">
+                <el-form ref="article" :model="article" label-width="80px">
                     <el-form-item label="文章标题">
-                        <el-input v-model="user.name" placeholder="请输入标题" clearable></el-input>
+                        <el-input v-model="article.title" placeholder="请输入文章标题" clearable></el-input>
                     </el-form-item>
                     <el-form-item label="文章分类">
-                        <!--<el-input v-model="user.date" placeholder="请选择分类" clearable></el-input>-->
-                        <el-select v-model="value4" clearable placeholder="请选择分类">
+                        <el-select v-model="category_id" clearable placeholder="请选择文章分类">
                             <el-option
-                                    v-for="item in options"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in categoryList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="文章标签">
-                        <!--<el-input v-model="user.date" placeholder="打标签" clearable></el-input>-->
-                        <el-select v-model="value5" multiple placeholder="请选择">
+                        <el-select v-model="articleTags" multiple placeholder="请选择文章标签">
                             <el-option
-                                    v-for="item in tags"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
+                                    v-for="item in tagList"
+                                    :key="item.id"
+                                    :label="item.name"
+                                    :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="文章内容">
-                        <el-input type="textarea" :rows="10" placeholder="请输入一句话简介" v-model="user.address"
+                        <el-input type="textarea" :rows="10" placeholder="请输入文章内容" v-model="article.content"
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item label="文章图片">
@@ -53,21 +51,23 @@
                     </el-form-item>
                     <el-form-item label="是否原创">
                         <el-switch
-                                v-model="value2"
+                                v-model="article.is_original"
+                                active-value="1"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949">
                         </el-switch>
                     </el-form-item>
                     <el-form-item label="是否草稿">
                         <el-switch
-                                v-model="value2"
+                                v-model="article.status"
+                                active-value="10"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949">
                         </el-switch>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="updateUser">保存修改</el-button>
-                        <router-link to="/admin/categories" class="el-button el-button--default">取消</router-link>
+                        <el-button type="primary" @click="saveArticle()">保存</el-button>
+                        <el-button type="default" @click="resetArticleForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -79,12 +79,15 @@
     export default {
         data() {
             return {
-                user: [{
-                    date: '2016-05-02',
-                    name: '王小虎',
-                    address: '上海市普陀区金沙江路 1518 弄'
-                }],
-                fileList2: [
+                article: {
+                    status: '10',
+                    is_original: '1'
+                },
+                categoryList: [],
+                tagList: [],
+                articleTags: [],
+                category_id: undefined,
+                fileList: [
                         {
                         name: 'food.jpeg',
                         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
@@ -92,38 +95,67 @@
                     {
                         name: 'food2.jpeg',
                         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-                ],
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }],
-                value4: '',
-                tags: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
-                value5: [],
+                ]
+            }
+        },
+        created () {
+            this.loadCategory();
+        },
+        watch: {
+            category_id: function (newVal) {
+                var self = this;
+                if (newVal) {
+                    self.loadTag();
+                }
             }
         },
         methods: {
+            /**
+             * 加载分类列表
+             */
+            loadCategory: function () {
+                var self = this;
+                this.$http.post('/category/all')
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.categoryList = response.data.data;
+                            }
+                        })
+            },
+            /**
+             * 加载分类下的标签列表
+             */
+            loadTag: function () {
+                var self = this;
+                this.$http.post('/tag/all', {category_id: self.category_id})
+                        .then(function (response) {
+                            if (response.data.success) {
+                                self.tagList = response.data.data;
+                                console.log(self.tagList);
+                            }
+                        })
+            },
+            /**
+             * 保存文章
+             */
+            saveArticle: function () {
+                var self = this;
+                this.article.category_id = this.category_id;
+                this.$http.post('/article', this.article)
+                        .then(function (response) {
+                            self.$message({
+                                message: response.data.message,
+                                type: response.data.success ? 'success' : 'error',
+                                showClose: true
+                            });
+                        })
+            },
+            /**
+             * 重置文章创建表单
+             */
+            resetArticleForm() {
+                this.$refs['article'].resetFields();
+            },
             handleRemove(file, fileList) {
                 console.log(file, fileList);
             },

@@ -20,7 +20,7 @@
                     label="文章标题">
             </el-table-column>
             <el-table-column
-                    prop="category_id"
+                    prop="category.name"
                     label="分类名称">
             </el-table-column>
             <el-table-column

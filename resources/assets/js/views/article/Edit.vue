@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="content-title">
-            <router-link to="/admin/categories" class="btn btn-primary pull-right">返回</router-link>
+            <router-link to="/admin/articles" class="btn btn-primary pull-right">返回</router-link>
             <h3>编辑文章</h3>
         </div>
         <el-row>
@@ -52,6 +52,7 @@
                     <el-form-item label="是否原创">
                         <el-switch
                                 v-model="article.is_original"
+                                active-value="1"
                                 active-color="#13ce66"
                                 inactive-color="#ff4949">
                         </el-switch>
@@ -65,7 +66,7 @@
                         </el-switch>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="updateArticle">保存修改</el-button>
+                        <el-button type="primary" @click="updateArticle()">保存修改</el-button>
                         <router-link to="/admin/articles" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
@@ -82,15 +83,7 @@
                 categoryList: [],
                 tagList: [],
                 articleTags: [],
-                fileList: [
-                    {
-                        name: 'food.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-                    },
-                    {
-                        name: 'food2.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-                ],
+                fileList: [],
             }
         },
         created () {
@@ -138,8 +131,17 @@
                             }
                         })
             },
-            updateArticle () {
-                console.log(1);
+            // 修改文章
+            updateArticle: function () {
+                var self = this;
+                this.$http.patch('/article/' + this.$route.params.id, self.article)
+                        .then(function (response) {
+                            self.$message({
+                                message: response.data.message,
+                                type: response.data.success ? 'success' : 'error',
+                                showClose: true
+                            });
+                        })
             },
             handleRemove(file, fileList) {
                 console.log(file, fileList);

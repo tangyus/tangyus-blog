@@ -44,6 +44,7 @@ $factory->define(App\Models\Article::class, function (Faker $faker) {
 		'author_id' => 1,
 		'status' => mt_rand(0, 1) ? 20 : 10,
 		'is_original' => mt_rand(0, 1) ? '1' : '0',
+		'view_count' => mt_rand(10, 1000),
 		'article_image' => $faker->image(),
 		'published_at' => $faker->dateTimeBetween($startDate = '-2 months', $endDate = 'now'),
 		'created_at' => Carbon::now(),

@@ -17,7 +17,7 @@ class ArticleRepository
 
 	public function page($number = 10, $sort = 'desc', $sortColumn = 'created_at')
 	{
-		return $this->model->orderBy($sortColumn, $sort)->paginate($number);
+		return $this->model->with('category')->orderBy($sortColumn, $sort)->paginate($number);
 	}
 
 	public function getById($id)
