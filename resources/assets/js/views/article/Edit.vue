@@ -50,20 +50,16 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="是否原创">
-                        <el-switch
-                                v-model="article.is_original"
-                                active-value="1"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949">
-                        </el-switch>
+                        <template>
+                            <el-radio v-model="article.is_original" label="1">原创</el-radio>
+                            <el-radio v-model="article.is_original" label="0">转载</el-radio>
+                        </template>
                     </el-form-item>
                     <el-form-item label="是否草稿">
-                        <el-switch
-                                v-model="article.status"
-                                active-value="10"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949">
-                        </el-switch>
+                        <template>
+                            <el-radio v-model="article.status" label="10">草稿</el-radio>
+                            <el-radio v-model="article.status" label="20">已发表</el-radio>
+                        </template>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateArticle()">保存修改</el-button>
@@ -108,7 +104,13 @@
                                 for (var i = 0; i < self.article.article_tags.length; i++) {
                                     self.articleTags.push(self.article.article_tags.tag_id);
                                 }
-                                console.log(self.article.article_tags);
+
+                                var imageArr = response.data.data.article_image.split('/');
+                                console.log(imageArr);
+                                self.fileList.push({
+                                    name: imageArr[imageArr.length - 1],
+                                    url: response.data.data.article_image
+                                });
                             }
                         })
             },
@@ -194,5 +196,10 @@
                 }
             }
         }
+    }
+</style>
+<style>
+    input[type="file"] {
+        display: none;
     }
 </style>

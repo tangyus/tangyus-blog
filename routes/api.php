@@ -24,6 +24,8 @@ Route::group([
 
 	Route::resource('article', 'ArticleController', ['except' => ['show', 'destroy', 'create']]);
 
+    Route::resource('category', 'CategoryController', ['except' => ['show', 'create']]);
     Route::post('category/all', 'CategoryController@allCategory');
+
     Route::post('tag/all', 'TagController@allTag');
 });

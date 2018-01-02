@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="content-title">
-            <router-link to="/admin/categories" class="btn btn-primary pull-right">返回</router-link>
+            <router-link to="/admin/articles" class="btn btn-primary pull-right">返回</router-link>
             <h3>创建文章</h3>
         </div>
         <el-row>
@@ -50,20 +50,16 @@
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="是否原创">
-                        <el-switch
-                                v-model="article.is_original"
-                                active-value="1"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949">
-                        </el-switch>
+                        <template>
+                            <el-radio v-model="article.is_original" label="1">原创</el-radio>
+                            <el-radio v-model="article.is_original" label="0">转载</el-radio>
+                        </template>
                     </el-form-item>
                     <el-form-item label="是否草稿">
-                        <el-switch
-                                v-model="article.status"
-                                active-value="10"
-                                active-color="#13ce66"
-                                inactive-color="#ff4949">
-                        </el-switch>
+                        <template>
+                            <el-radio v-model="article.status" label="10">草稿</el-radio>
+                            <el-radio v-model="article.status" label="20">已发表</el-radio>
+                        </template>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveArticle()">保存</el-button>
@@ -88,13 +84,10 @@
                 articleTags: [],
                 category_id: undefined,
                 fileList: [
-                        {
+                    {
                         name: 'food.jpeg',
                         url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
                     },
-                    {
-                        name: 'food2.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
                 ]
             }
         },
@@ -194,12 +187,6 @@
                     }
 
                     .el-form-item__content {
-
-                        .el-upload {
-                            .input[type="file"] {
-                                display: none!important;
-                            }
-                        }
                         .el-select {
                             width: 100%;
                         }
@@ -207,5 +194,10 @@
                 }
             }
         }
+    }
+</style>
+<style>
+    input[type="file"] {
+        display: none;
     }
 </style>

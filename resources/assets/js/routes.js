@@ -88,7 +88,7 @@ export default [
                         component: CategoryCreate
                     },
                     {
-                        path: 'edit',
+                        path: ':id/edit',
                         component: CategoryEdit
                     },
                 ]
@@ -106,7 +106,7 @@ export default [
                         component: TagCreate
                     },
                     {
-                        path: 'edit',
+                        path: ':id/edit',
                         component: TagEdit
                     },
                 ]
@@ -124,7 +124,7 @@ export default [
                         component: LinkCreate
                     },
                     {
-                        path: 'edit',
+                        path: ':id/edit',
                         component: LinkEdit
                     },
                 ]
