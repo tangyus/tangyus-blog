@@ -92,17 +92,25 @@
             },
             deleteCategory: function (row) {
                 var self = this;
-                this.$http.delete('/category/' + row.id)
-                        .then(function (response) {
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                            if (response.data.success) {
-                                self.loadCategory(self.currentPage);
-                            }
-                        })
+                self.$confirm('此操作将从数据库中永久删除, 请确认是否继续?', '疯狂提醒中...', {
+                        confirmButtonText: '继续',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function () {
+                        this.$http.delete('/category/' + row.id)
+                                .then(function (response) {
+                                    self.$message({
+                                        message: response.data.message,
+                                        type: response.data.success ? 'success' : 'error',
+                                        showClose: true
+                                    });
+                                    if (response.data.success) {
+                                        self.loadCategory(self.currentPage);
+                                    }
+                                })
+                        }
+                    ).catch(function () {
+                    });
             },
             // 翻页
             handleCurrentChange(val) {

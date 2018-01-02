@@ -177,7 +177,7 @@
     }
 
     .el-row {
-        margin: 10px 0;
+        margin: 50px 0;
 
         .el-col {
             .el-form {

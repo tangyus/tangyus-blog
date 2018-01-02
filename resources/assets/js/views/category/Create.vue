@@ -17,8 +17,8 @@
                         <el-input v-model="category.article_count" placeholder="文章数量" disabled></el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="saveCategory">保存修改</el-button>
-                        <router-link to="/admin/categories" class="el-button el-button--default">重置</router-link>
+                        <el-button type="primary" @click="saveCategory">创建保存</el-button>
+                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -46,6 +46,9 @@
                                 showClose: true
                             });
                         })
+            },
+            resetForm() {
+                this.$refs['category'].resetFields();
             }
         }
     }
@@ -63,7 +66,7 @@
     }
 
     .el-row {
-        margin: 10px 0;
+        margin: 50px 0;
 
         .el-form-item__label {
             text-align: center;
