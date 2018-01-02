@@ -33,4 +33,7 @@ Route::group([
     // 标签路由
     Route::resource('tag', 'TagController', ['except' => ['show', 'create']]);
     Route::post('tag/all', 'TagController@allTag');
+
+    // 友链路由
+    Route::resource('link', 'LinkController', ['except' => ['show', 'create']]);
 });
