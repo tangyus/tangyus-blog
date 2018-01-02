@@ -106,7 +106,6 @@
                                 }
 
                                 var imageArr = response.data.data.article_image.split('/');
-                                console.log(imageArr);
                                 self.fileList.push({
                                     name: imageArr[imageArr.length - 1],
                                     url: response.data.data.article_image

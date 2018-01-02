@@ -24,3 +24,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 
 // laravel 自带登录注册
 Auth::routes();
+
+Route::post('upload', 'UploadController@fileUpload');

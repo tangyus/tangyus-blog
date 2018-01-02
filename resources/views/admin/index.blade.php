@@ -10,6 +10,7 @@
     <title>@yield('title', 'tangyus') - tangyus</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <script type="text/javascript">
         window.Laravel = {

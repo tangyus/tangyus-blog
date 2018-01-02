@@ -36,4 +36,6 @@ Route::group([
 
     // 友链路由
     Route::resource('link', 'LinkController', ['except' => ['show', 'create']]);
+
+	Route::post('upload', 'CommonController@fileUpload');
 });
