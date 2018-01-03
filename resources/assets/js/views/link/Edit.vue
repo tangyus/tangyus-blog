@@ -18,7 +18,7 @@
                                 class="upload-demo"
                                 ref="upload"
                                 action="/upload"
-                                :before-upload="uploadFile"
+                                :before-upload="beforeUploadFile"
                                 :on-success="successHandle"
                                 :on-error="errorHandle"
                                 :limit="1"
@@ -69,6 +69,7 @@
             this.loadTLink();
         },
         methods: {
+            // 加载当前ID的友链信息
             loadTLink: function () {
                 var self = this;
                 this.$http.get('/link/' + this.$route.params.id + '/edit')
@@ -83,6 +84,7 @@
                             }
                         })
             },
+            // 更新当前ID的友链信息
             updateLink() {
                 var self = this;
                 this.$http.patch('/link/' + this.$route.params.id, self.link)
@@ -97,10 +99,12 @@
             resetForm() {
                 this.$refs['link'].resetFields();
             },
+            // 上传图片
             submitUpload() {
                 this.$refs.upload.submit();
             },
-            uploadFile(file) {
+            // 上传友链图片之前的操作
+            beforeUploadFile(file) {
                 if (file.size > 500 * 1024) {
                     this.$message({
                         message: '请上传小于500KB的图片',
@@ -110,6 +114,7 @@
                     return false;
                 }
             },
+            // 上传友链图片超出限制数量
             handleExceed() {
                 this.$message({
                     message: '最多只能上传一张图片',
@@ -117,9 +122,11 @@
                     showClose: true
                 });
             },
+            // 上传友链图片成功
             successHandle(response, file, fileList) {
                 this.link.link_image = response.path;
             },
+            // 上传友链图片失败
             errorHandle(err, file, fileList) {
                 this.$message({
                     message: err,

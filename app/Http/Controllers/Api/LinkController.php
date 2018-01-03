@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\LinkRequest;
 use App\Models\Link;
-use DeepCopy\TypeFilter\Spl\SplDoublyLinkedList;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Response;
@@ -36,7 +36,7 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
-    public function update(Request $request, $id)
+    public function update(LinkRequest $request, $id)
     {
         $link = Link::findOrFail($id);
         $input = $request->all();
@@ -50,7 +50,7 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
-    public function store(Request $request)
+    public function store(LinkRequest $request)
     {
         $input = $request->all();
 

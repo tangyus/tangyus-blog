@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
 
 class UploadController extends Controller
 {
@@ -13,13 +15,33 @@ class UploadController extends Controller
 	public function fileUpload(Request $request)
 	{
 		$data = ['success' => false, 'path' => ''];
-		if ($request->file) {
-			$result = $this->save($request->file, 'links_image', '2');
+
+        $rules = [
+            'image' => 'required|image|mimes:jpg,png,jpeg'
+        ];
+        $messages = [
+            'image.required' => '图片必须上传',
+            'image.image' => '上传文件格式必须为图片',
+            'image.mimes' => '上传图片的格式只能是jgp/png/jpeg'
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+        if ($validator->fails()) {
+//            dd($validator->errors());
+            $data['message'] = $validator->errors();
+            return Response::json($data);
+        }
+
+		if ($request->image) {
+			$result = $this->save($request->image, 'links_image', '2');
 
 			if ($result) {
+				$data['message'] = '上传图片成功';
 				$data['path'] = $result['path'];
 				$data['success'] = true;
-			}
+			} else {
+                $data['message'] = $result['上传失败，图片格式不正确'];
+            }
 		}
 
 		return Response::json($data);

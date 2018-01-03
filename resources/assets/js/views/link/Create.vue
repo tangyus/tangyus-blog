@@ -31,11 +31,19 @@
                                 :limit="1"
                                 :on-exceed="handleExceed"
                                 :auto-upload="false"
-                                list-type="picture">
+                                list-type="picture"
+                                name="image">
                             <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
                             <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传</el-button>
                             <div slot="tip" class="el-upload__tip">只能上传jpg/jpeg/png文件，且不超过500KB</div>
                         </el-upload>
+                        <el-alert
+                                v-if="uploadErrorMessage.length > 0"
+                                v-for="item in uploadErrorMessage"
+                                title=""
+                                type="error">
+                            {{item}}
+                        </el-alert>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveLink">保存修改</el-button>
@@ -69,6 +77,7 @@
                         { required: true, message: '请上传友链图片', trigger: 'blur' }
                     ]
                 },
+                uploadErrorMessage: []
             }
         },
         methods: {
@@ -123,9 +132,18 @@
                 });
             },
             successHandle(response, file, fileList) {
-                this.link.link_image = response.path;
+                console.log(fileList);
+                console.log(file);
+                if (response.success) {
+                    this.link.link_image = response.path;
+                } else {
+                    this.uploadErrorMessage = response.message.image;
+                    file = {},
+                    fileList = {};
+                }
             },
             errorHandle(err, file, fileList) {
+                console.log(err);
                 this.$message({
                     message: err,
                     type: 'error',
@@ -158,6 +176,9 @@
 
         .el-form-item__label {
             text-align: center;
+        }
+        .el-alert {
+            margin: 5px 0;
         }
     }
 </style>
