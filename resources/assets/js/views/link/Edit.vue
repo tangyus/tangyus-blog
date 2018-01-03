@@ -13,16 +13,22 @@
                     <el-form-item label="友链地址">
                         <el-input v-model="link.site" placeholder="请输入友链地址" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="图片">
+                    <el-form-item label="友链图片" prop="link_image">
                         <el-upload
                                 class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove"
+                                ref="upload"
+                                action="/upload"
+                                :before-upload="uploadFile"
+                                :on-success="successHandle"
+                                :on-error="errorHandle"
+                                :limit="1"
+                                :on-exceed="handleExceed"
+                                :auto-upload="false"
                                 :file-list="link_images"
                                 list-type="picture">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传</el-button>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/jpeg/png文件，且不超过500KB</div>
                         </el-upload>
                     </el-form-item>
                     <el-form-item label="更新时间">
@@ -43,7 +49,20 @@
         data() {
             return {
                 link: {},
-                link_images: []
+                link_images: [],
+                site_type: '',
+                rules: {
+                    name: [
+                        { required: true, message: '请输入友链名称', trigger: 'blur' },
+                        { min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur' }
+                    ],
+                    site: [
+                        { required: true, message: '请输入友链地址', trigger: 'blur' }
+                    ],
+                    link_image: [
+                        { required: true, message: '请上传友链图片', trigger: 'blur' }
+                    ]
+                },
             }
         },
         created() {
@@ -59,7 +78,7 @@
                                 var imageArr = response.data.data.link_image.split('/');
                                 self.link_images.push({
                                     name: imageArr[imageArr.length - 1],
-                                    url: response.data.data.article_image
+                                    url: response.data.data.link_image
                                 });
                             }
                         })
@@ -78,11 +97,35 @@
             resetForm() {
                 this.$refs['link'].resetFields();
             },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
+            submitUpload() {
+                this.$refs.upload.submit();
             },
-            handlePreview(file) {
-                console.log(file);
+            uploadFile(file) {
+                if (file.size > 500 * 1024) {
+                    this.$message({
+                        message: '请上传小于500KB的图片',
+                        type: 'error',
+                        showClose: true
+                    });
+                    return false;
+                }
+            },
+            handleExceed() {
+                this.$message({
+                    message: '最多只能上传一张图片',
+                    type: 'error',
+                    showClose: true
+                });
+            },
+            successHandle(response, file, fileList) {
+                this.link.link_image = response.path;
+            },
+            errorHandle(err, file, fileList) {
+                this.$message({
+                    message: err,
+                    type: 'error',
+                    showClose: true
+                });
             }
         }
     }

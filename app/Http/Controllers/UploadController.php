@@ -28,7 +28,7 @@ class UploadController extends Controller
 	public function save($file, $folder, $file_prefix)
 	{
 		// 构建文件夹的储存规则，如uploads/images/avatars/201709/21/...
-		$folder_name = "uploads/images/$folder/".date('Ym', time()).'/'.date('d', time()).'/';
+		$folder_name = "uploads/images/$folder/".date('Ym', time()).'/'.date('d', time());
 
 		// 文件具体储存路径
 		$upload_path = public_path().'/'.$folder_name;
@@ -47,7 +47,7 @@ class UploadController extends Controller
 		$file->move($upload_path, $filename);
 
 		return [
-			'path' => config('app.url') . "/$folder_name/$filename"
+			'path' => "/$folder_name/$filename"
 		];
 	}
 }
