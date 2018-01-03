@@ -55,6 +55,8 @@ http.interceptors.response.use(function (response) {
 
 				console.log(response);
 				window.location = '/login';
+		} else if ([422].indexOf(response.status) >= 0) {
+				return response;
 		}
 
     // 当响应异常时做一些处理
@@ -81,7 +83,4 @@ const router = new VueRouter({
 const app = new Vue({
     router,
     render: (h) => h(App)
-    // render: h => {
-    //     return h(App)
-    // }
 }).$mount('#app');

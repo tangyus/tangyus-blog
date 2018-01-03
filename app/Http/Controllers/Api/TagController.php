@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\TagRequest;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -49,7 +50,7 @@ class TagController extends Controller
         return Response::json($data);
     }
 
-    public function update(Request $request, $id)
+    public function update(TagRequest $request, $id)
     {
         $tag = Tag::findOrFail($id);
         $input = $request->all();
@@ -63,7 +64,7 @@ class TagController extends Controller
         return Response::json($data);
     }
 
-    public function store(Request $request)
+    public function store(TagRequest $request)
     {
         $input = $request->all();
 

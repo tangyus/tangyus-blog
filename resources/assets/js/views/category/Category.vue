@@ -96,8 +96,8 @@
                         confirmButtonText: '继续',
                         cancelButtonText: '取消',
                         type: 'warning'
-                    }).then(function () {
-                        this.$http.delete('/category/' + row.id)
+                    }).then(() => {
+                        self.$http.delete('/category/' + row.id)
                                 .then(function (response) {
                                     self.$message({
                                         message: response.data.message,
@@ -109,7 +109,7 @@
                                     }
                                 })
                         }
-                    ).catch(function () {
+                    ).catch(() => {
                     });
             },
             // 翻页

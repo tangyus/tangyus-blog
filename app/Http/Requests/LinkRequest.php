@@ -24,8 +24,8 @@ class LinkRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|between:3, 8',
-            'site' => 'required|url'
+            'name' => 'bail|required|between:3, 8',
+            'site' => 'bail|required|url'
         ];
     }
 

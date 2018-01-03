@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -48,7 +49,7 @@ class CategoryController extends Controller
         return Response::json($data);
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, $id)
     {
         $input = $request->all();
         $category = Category::findOrFail($id);
@@ -61,7 +62,7 @@ class CategoryController extends Controller
         return Response::json($data);
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request)
     {
         $input = $request->all();
 

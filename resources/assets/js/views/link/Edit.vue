@@ -6,30 +6,22 @@
         </div>
         <el-row>
             <el-col :span="12" :offset="8">
-                <el-form ref="link" :model="link" label-width="80px">
-                    <el-form-item label="友链名称">
+                <el-form ref="link" :model="link" :rules="rules" label-width="80px">
+                    <el-form-item label="友链名称" prop="name">
                         <el-input v-model="link.name" placeholder="请输入友链名称" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="友链地址">
-                        <el-input v-model="link.site" placeholder="请输入友链地址" clearable></el-input>
+                    <el-form-item label="友链地址" prop="site">
+                        <div>
+                            <el-input placeholder="请输入友链地址" v-model="link.site" class="input-with-select">
+                                <el-select v-model="site_type" slot="prepend" placeholder="请选择">
+                                    <el-option label="Http://" value="1"></el-option>
+                                    <el-option label="Https://" value="2"></el-option>
+                                </el-select>
+                            </el-input>
+                        </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <el-upload
-                                class="upload-demo"
-                                ref="upload"
-                                action="/upload"
-                                :before-upload="beforeUploadFile"
-                                :on-success="successHandle"
-                                :on-error="errorHandle"
-                                :limit="1"
-                                :on-exceed="handleExceed"
-                                :auto-upload="false"
-                                :file-list="link_images"
-                                list-type="picture">
-                            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/jpeg/png文件，且不超过500KB</div>
-                        </el-upload>
+                        <image-upload :link="link" :fileList="link_images"></image-upload>
                     </el-form-item>
                     <el-form-item label="更新时间">
                         <el-input v-model="link.updated_at" placeholder="更新时间" disabled clearable></el-input>
@@ -45,7 +37,12 @@
 </template>
 
 <script>
+    import ImageUpload from '../../dashboard/ImageUpload.vue';
+
     export default {
+        components: {
+            ImageUpload
+        },
         data() {
             return {
                 link: {},
@@ -87,52 +84,33 @@
             // 更新当前ID的友链信息
             updateLink() {
                 var self = this;
-                this.$http.patch('/link/' + this.$route.params.id, self.link)
-                        .then(function (response) {
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                        })
+                this.$refs['link'].validate(function (valid) {
+                    if (valid) {
+                        self.$http.patch('/link/' + self.$route.params.id, self.link)
+                                .then(function (response) {
+                                    if (response.data.errors) {
+                                        for (var i in response.data.errors) {
+                                            self.$message({
+                                                message: response.data.errors[i][0],
+                                                type: 'error',
+                                                showClose: true
+                                            });
+                                        }
+                                        return false;
+                                    }
+                                    self.$message({
+                                        message: response.data.message,
+                                        type: response.data.success ? 'success' : 'error',
+                                        showClose: true
+                                    });
+                                })
+                    } else {
+                        return false;
+                    }
+                });
             },
             resetForm() {
                 this.$refs['link'].resetFields();
-            },
-            // 上传图片
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-            // 上传友链图片之前的操作
-            beforeUploadFile(file) {
-                if (file.size > 500 * 1024) {
-                    this.$message({
-                        message: '请上传小于500KB的图片',
-                        type: 'error',
-                        showClose: true
-                    });
-                    return false;
-                }
-            },
-            // 上传友链图片超出限制数量
-            handleExceed() {
-                this.$message({
-                    message: '最多只能上传一张图片',
-                    type: 'error',
-                    showClose: true
-                });
-            },
-            // 上传友链图片成功
-            successHandle(response, file, fileList) {
-                this.link.link_image = response.path;
-            },
-            // 上传友链图片失败
-            errorHandle(err, file, fileList) {
-                this.$message({
-                    message: err,
-                    type: 'error',
-                    showClose: true
-                });
             }
         }
     }
@@ -152,13 +130,14 @@
     .el-row {
         margin: 50px 0;
 
+        .el-input-group__prepend {
+            .el-select {
+                width: 100px;
+            }
+        }
+
         .el-form-item__label {
             text-align: center;
         }
-    }
-</style>
-<style>
-    input[type="file"] {
-        display: none;
     }
 </style>

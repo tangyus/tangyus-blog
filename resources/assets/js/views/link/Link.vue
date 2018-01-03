@@ -101,20 +101,20 @@
                             cancelButtonText: '取消',
                             type: 'warning'
                         }
-                ).then(function () {
-                            this.$http.delete('/link/' + row.id)
-                                    .then(function (response) {
-                                        self.$message({
-                                            message: response.data.message,
-                                            type: response.data.success ? 'success' : 'error',
-                                            showClose: true
-                                        });
-                                        if (response.data.success) {
-                                            self.loadLink(self.currentPage);
-                                        }
-                                    })
-                        }
-                ).catch(function () {
+                ).then(() => {
+                    this.$http.delete('/link/' + row.id)
+                            .then(function (response) {
+                                self.$message({
+                                    message: response.data.message,
+                                    type: response.data.success ? 'success' : 'error',
+                                    showClose: true
+                                });
+                                if (response.data.success) {
+                                    self.loadLink(self.currentPage);
+                                }
+                            })
+                    }
+                ).catch(() => {
                 });
             },
             // 翻页

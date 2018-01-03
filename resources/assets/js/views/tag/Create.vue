@@ -6,11 +6,11 @@
         </div>
         <el-row>
             <el-col :span="12" :offset="8">
-                <el-form ref="tag" :model="tag" label-width="80px">
-                    <el-form-item label="标签名称">
+                <el-form ref="tag" :model="tag" :rules="rules" label-width="80px">
+                    <el-form-item label="标签名称" prop="name">
                         <el-input v-model="tag.name" placeholder="请输入标签名称" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="所属分类">
+                    <el-form-item label="所属分类" prop="category_id">
                         <template>
                             <el-select v-model="tag.category_id" clearable placeholder="请选择标签分类">
                                 <el-option
@@ -37,7 +37,16 @@
         data() {
             return {
                 tag: {},
-                categoryList: []
+                categoryList: [],
+                rules: {
+                    name: [
+                        { required: true, message: '请输入标签名称', trigger: 'blur' },
+                        { min: 3, max: 10, message: '标签名称长度为3-10个字符', trigger: 'blur' }
+                    ],
+                    category_id: [
+                        { required: true, message: '请选择标签分类', trigger: 'blur'}
+                    ]
+                }
             }
         },
         created() {
@@ -55,19 +64,33 @@
             },
             saveTag() {
                 var self = this;
-                this.$http.post('/tag', self.tag)
-                        .then(function (response) {
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                            if (response.data.success) {
-                                self.$router.push({
-                                    path: '/admin/tags'
-                                });
-                            }
-                        })
+                this.$refs['tag'].validate(function (valid) {
+                    if (valid) {
+                        self.$http.post('/tag', self.tag)
+                                .then(function (response) {
+                                    if (response.data.errors) {
+                                        for (var i in response.data.errors) {
+                                            self.$message({
+                                                message: response.data.errors[i][0],
+                                                type: 'error',
+                                                showClose: true
+                                            });
+                                        }
+                                        return false;
+                                    }
+                                    self.$message({
+                                        message: response.data.message,
+                                        type: response.data.success ? 'success' : 'error',
+                                        showClose: true
+                                    });
+                                    if (response.data.success) {
+                                        self.$router.push({
+                                            path: '/admin/tags'
+                                        });
+                                    }
+                                })
+                    }
+                });
             },
             resetForm() {
                 this.$refs['tag'].resetFields();

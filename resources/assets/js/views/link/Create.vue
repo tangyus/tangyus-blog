@@ -21,29 +21,7 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <el-upload
-                                class="upload-demo"
-                                ref="upload"
-                                action="/upload"
-                                :before-upload="uploadFile"
-                                :on-success="successHandle"
-                                :on-error="errorHandle"
-                                :limit="1"
-                                :on-exceed="handleExceed"
-                                :auto-upload="false"
-                                list-type="picture"
-                                name="image">
-                            <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-                            <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/jpeg/png文件，且不超过500KB</div>
-                        </el-upload>
-                        <el-alert
-                                v-if="uploadErrorMessage.length > 0"
-                                v-for="item in uploadErrorMessage"
-                                title=""
-                                type="error">
-                            {{item}}
-                        </el-alert>
+                        <image-upload :link="link"></image-upload>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveLink">保存修改</el-button>
@@ -56,7 +34,12 @@
 </template>
 
 <script>
+    import ImageUpload from '../../dashboard/ImageUpload.vue';
+
     export default {
+        components: {
+            ImageUpload
+        },
         data() {
             return {
                 link: {
@@ -76,8 +59,7 @@
                     link_image: [
                         { required: true, message: '请上传友链图片', trigger: 'blur' }
                     ]
-                },
-                uploadErrorMessage: []
+                }
             }
         },
         methods: {
@@ -110,45 +92,6 @@
             },
             resetForm() {
                 this.$refs['link'].resetFields();
-            },
-            submitUpload() {
-                this.$refs.upload.submit();
-            },
-            uploadFile(file) {
-                if (file.size > 500 * 1024) {
-                    this.$message({
-                        message: '请上传小于500KB的图片',
-                        type: 'error',
-                        showClose: true
-                    });
-                    return false;
-                }
-            },
-            handleExceed() {
-                this.$message({
-                    message: '最多只能上传一张图片',
-                    type: 'error',
-                    showClose: true
-                });
-            },
-            successHandle(response, file, fileList) {
-                console.log(fileList);
-                console.log(file);
-                if (response.success) {
-                    this.link.link_image = response.path;
-                } else {
-                    this.uploadErrorMessage = response.message.image;
-                    file = {},
-                    fileList = {};
-                }
-            },
-            errorHandle(err, file, fileList) {
-                console.log(err);
-                this.$message({
-                    message: err,
-                    type: 'error',
-                    showClose: true
-                });
             }
         }
     }
@@ -177,13 +120,5 @@
         .el-form-item__label {
             text-align: center;
         }
-        .el-alert {
-            margin: 5px 0;
-        }
-    }
-</style>
-<style>
-    input[type="file"] {
-        display: none;
     }
 </style>
