@@ -68,6 +68,9 @@
             this.loadTag();
         },
         methods: {
+            /**
+             * 加载标签信息
+             */
             loadTag: function (page) {
                 var self = this;
                 var url = page ? '/tag?page=' + page : '/tag';
@@ -81,11 +84,18 @@
                             }
                         })
             },
+            /**
+             * 编辑标签
+             */
             editTag: function (row) {
                 this.$router.push({
                     path: 'tags/' + row.id + '/edit'
                 });
             },
+            /**
+             * 删除标签
+             * @param row
+             */
             deleteTag: function (row) {
                 var self = this;
                 self.$confirm('此操作将从数据库中永久删除, 请确认是否继续?', '疯狂提醒中...', {
@@ -109,7 +119,10 @@
                 ).catch(() => {
                 });
             },
-            // 翻页
+            /**
+             * 翻页
+             * @param val
+             */
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.loadTag(val);

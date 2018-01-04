@@ -21,11 +21,10 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <image-upload :link="link"></image-upload>
+                        <image-upload :image_path="link.link_image" :files="linkFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveLink">保存修改</el-button>
-                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -47,6 +46,7 @@
                     site: '',
                     link_image: ''
                 },
+                linkFileList: [],
                 site_type: '',
                 rules: {
                     name: [
@@ -63,6 +63,9 @@
             }
         },
         methods: {
+            /**
+             * 创建友链
+             */
             saveLink() {
                 var self = this;
                 this.$refs['link'].validate(function (valid) {
@@ -90,8 +93,15 @@
                     }
                 });
             },
-            resetForm() {
-                this.$refs['link'].resetFields();
+            /**
+             * 子组件上传图片成功后返回的图片路径以及图片列表
+             * @param imagePath
+             */
+            getUploadImagePath(imagePath) {
+                this.link.link_image = imagePath;
+            },
+            getUploadFiles(files) {
+                this.linkFileList = files;
             }
         }
     }

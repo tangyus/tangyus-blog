@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Response;
 
 class LinkController extends Controller
 {
+	/**
+	 * 分类获取友链
+	 * @return mixed
+	 */
     public function index()
     {
         $links = Link::paginate(10);
@@ -23,6 +27,11 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
+	/**
+	 * 编辑友链
+	 * @param $id
+	 * @return mixed
+	 */
     public function edit($id)
     {
         $link = Link::findOrFail($id);
@@ -36,20 +45,31 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
+	/**
+	 * 保存更新友链
+	 * @param LinkRequest $request
+	 * @param $id
+	 * @return mixed
+	 */
     public function update(LinkRequest $request, $id)
     {
         $link = Link::findOrFail($id);
         $input = $request->all();
 
         if ($link->fill($input)->save()) {
-            $data = ['success' => true, 'message' => '修改保存成功'];
+            $data = ['success' => true, 'message' => '修改保存友链成功'];
         } else {
-            $data = ['success' => false, 'message' => '修改保存失败'];
+            $data = ['success' => false, 'message' => '修改保存友链失败'];
         }
 
         return Response::json($data);
     }
 
+	/**
+	 * 创建友链
+	 * @param LinkRequest $request
+	 * @return mixed
+	 */
     public function store(LinkRequest $request)
     {
         $input = $request->all();
@@ -64,6 +84,11 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
+	/**
+	 * 删除友链
+	 * @param $id
+	 * @return mixed
+	 */
     public function destroy($id)
     {
         $link = Link::findOrFail($id);

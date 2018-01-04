@@ -40,7 +40,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="createUser">立即创建</el-button>
-                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -80,12 +79,28 @@
             }
         },
         methods: {
+            /**
+             * 创建用户
+             * @returns {boolean}
+             */
             createUser() {
                 var self = this;
                 this.$refs['user'].validate((valid) => {
                     if (valid) {
                         this.$http.post('/user', self.user)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
+                                    if (response.data.errors) {
+                                        for (var i in response.data.errors) {
+                                            self.$message({
+                                                message: response.data.errors[i][0],
+                                                type: 'error',
+                                                showClose: true
+                                            });
+                                        }
+                                        return false;
+                                    }
+
                                     self.$message({
                                         message: response.data.message,
                                         type: response.data.success ? 'success' : 'error',
@@ -100,9 +115,6 @@
                     }
                 });
             },
-            resetForm() {
-                this.$refs['user'].resetFields();
-            }
         }
     }
 </script>

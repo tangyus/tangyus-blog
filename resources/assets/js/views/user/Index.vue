@@ -84,7 +84,10 @@
             this.loadUser();
         },
         methods: {
-            // 加载用户列表
+            /**
+             * 加载用户列表
+             * @param page
+             */
             loadUser: function (page) {
                 var self = this;
                 var url = page ? '/user?page=' + page : '/user';
@@ -98,24 +101,40 @@
                             }
                         })
             },
+            /**
+             * 编辑用户
+             */
             editUser: function (row) {
                 this.$router.push({
                     path: 'users/' + row.id + '/edit'
                 });
             },
+            /**
+             * 删除用户
+             * @param row
+             */
             deleteUser: function (row) {
                 var self = this;
-                this.$http.post('/user/delete/' + row.id)
-                        .then(function (response) {
-                            if (response.data.success) {
-                                self.loadUser(self.currentPage);
-                            }
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                        })
+                self.$confirm('此操作将从数据库中永久删除, 请确认是否继续?', '疯狂提醒中...', {
+                            confirmButtonText: '继续',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }
+                ).then(() => {
+                    this.$http.post('/user/delete/' + row.id)
+                            .then(function (response) {
+                                if (response.data.success) {
+                                    self.loadUser(self.currentPage);
+                                }
+                                self.$message({
+                                    message: response.data.message,
+                                    type: response.data.success ? 'success' : 'error',
+                                    showClose: true
+                                });
+                            })
+                    }
+                ).catch(() => {
+                });
             },
             // 翻页
             handleCurrentChange(val) {

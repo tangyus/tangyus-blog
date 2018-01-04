@@ -34,7 +34,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateUser">保存修改</el-button>
-                        <router-link to="/admin/users" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -53,6 +52,9 @@
             this.loadUser();
         },
         methods: {
+            /**
+             * 加载当前ID用户信息
+             */
             loadUser: function () {
                 var self = this;
                 this.$http.get('/user/' + this.$route.params.id + '/edit')
@@ -62,10 +64,24 @@
                             }
                         })
             },
+            /**
+             * 保存更新用户信息
+             */
             updateUser() {
                 var self = this;
                 this.$http.patch('/user/' + this.$route.params.id, self.user)
                         .then(function (response) {
+                            // 未通过后台表单验证时，显示表单验证错误信息
+                            if (response.data.errors) {
+                                for (var i in response.data.errors) {
+                                    self.$message({
+                                        message: response.data.errors[i][0],
+                                        type: 'error',
+                                        showClose: true
+                                    });
+                                }
+                                return false;
+                            }
                             self.$message({
                                 message: response.data.message,
                                 type: response.data.success ? 'success' : 'error',

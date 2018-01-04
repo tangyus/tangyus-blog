@@ -26,7 +26,7 @@ import LinkIndex from './views/link/Link.vue';
 import LinkEdit from './views/link/Edit.vue';
 import LinkCreate from './views/link/Create.vue';
 
-import Mark from './views/Mark.vue';
+import Mark from './dashboard/Mark.vue';
 
 export default [
 	{

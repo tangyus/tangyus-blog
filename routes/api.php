@@ -24,7 +24,7 @@ Route::group([
 	Route::post('user/delete/{user}', 'UserController@softDelete');
 
     // 文章路由
-	Route::resource('article', 'ArticleController', ['except' => ['show', 'destroy', 'create']]);
+	Route::resource('article', 'ArticleController', ['except' => ['show', 'create']]);
 
     // 标签路由
     Route::resource('category', 'CategoryController', ['except' => ['show', 'create']]);

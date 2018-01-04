@@ -18,7 +18,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveCategory">创建保存</el-button>
-                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -46,12 +45,16 @@
             }
         },
         methods: {
+            /**
+             * 创建分类信息
+             */
             saveCategory () {
                 var self = this;
                 this.$refs['category'].validate(function (valid) {
                     if (valid) {
                         self.$http.post('/category', self.category)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
                                     if (response.data.errors) {
                                         for (var i in response.data.errors) {
                                             self.$message({
@@ -71,9 +74,6 @@
                     }
                 });
             },
-            resetForm() {
-                this.$refs['category'].resetFields();
-            }
         }
     }
 </script>

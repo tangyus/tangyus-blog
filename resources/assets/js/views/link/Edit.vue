@@ -21,14 +21,13 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <image-upload :link="link" :fileList="link_images"></image-upload>
+                        <image-upload :image_path="link.link_image" :files="linkFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item label="更新时间">
                         <el-input v-model="link.updated_at" placeholder="更新时间" disabled clearable></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateLink">保存修改</el-button>
-                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -46,7 +45,7 @@
         data() {
             return {
                 link: {},
-                link_images: [],
+                linkFileList: [],
                 site_type: '',
                 rules: {
                     name: [
@@ -66,7 +65,9 @@
             this.loadTLink();
         },
         methods: {
-            // 加载当前ID的友链信息
+            /**
+             * 加载当前ID的友链信息
+             */
             loadTLink: function () {
                 var self = this;
                 this.$http.get('/link/' + this.$route.params.id + '/edit')
@@ -74,20 +75,23 @@
                             if (response.data.success) {
                                 self.link = response.data.data;
                                 var imageArr = response.data.data.link_image.split('/');
-                                self.link_images.push({
+                                self.linkFileList.push({
                                     name: imageArr[imageArr.length - 1],
                                     url: response.data.data.link_image
                                 });
                             }
                         })
             },
-            // 更新当前ID的友链信息
+            /**
+             * 更新当前ID的友链信息
+             */
             updateLink() {
                 var self = this;
                 this.$refs['link'].validate(function (valid) {
                     if (valid) {
                         self.$http.patch('/link/' + self.$route.params.id, self.link)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
                                     if (response.data.errors) {
                                         for (var i in response.data.errors) {
                                             self.$message({
@@ -109,8 +113,15 @@
                     }
                 });
             },
-            resetForm() {
-                this.$refs['link'].resetFields();
+            /**
+             * 子组件上传图片成功后返回的图片路径以及图片列表
+             * @param imagePath
+             */
+            getUploadImagePath(imagePath) {
+                this.link.link_image = imagePath;
+            },
+            getUploadFiles(files) {
+                this.linkFileList = files;
             }
         }
     }

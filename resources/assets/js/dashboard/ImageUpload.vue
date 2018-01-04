@@ -31,10 +31,10 @@
 <script>
     export default {
         props: {
-            link: {
-                type: Object
+            image_path: {
+                type: String
             },
-            fileList: {
+            files: {
                 type: Array
             }
         },
@@ -49,11 +49,24 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             },
+
+            // 由于props数据只能单向从父组件到子组件，故定义一个计算属性接收父组件传递来的数据
+            fileList() {
+                return this.files;
+            }
         },
         methods: {
+            /**
+             * 上传文件
+             */
             submitUpload() {
                 this.$refs.upload.submit();
             },
+            /**
+             * 文件上传之前，检查文件格式和大小
+             * @param file
+             * @returns {boolean}
+             */
             uploadFile(file) {
                 if (file.size > 500 * 1024) {
                     this.$message({
@@ -72,6 +85,9 @@
                     return false;
                 }
             },
+            /**
+             * 超出文件上传限制
+             */
             handleExceed() {
                 this.$message({
                     message: '最多只能上传一张图片',
@@ -79,19 +95,33 @@
                     showClose: true
                 });
             },
+            /**
+             * 上传成功
+             * @param response 返回信息
+             * @param file 文件信息
+             * @param fileList
+             */
             successHandle(response, file, fileList) {
                 if (response.success) {
-                    this.link.link_image = response.path;
                     this.uploadErrorMessage = [];
-                    this.fileList = [{
+
+                    this.fileList.push({
                         'name': file.name,
                         'url': file.url
-                    }];
+                    })
+                    // 上传成功之后，把上传的路径和文件列表返回到父组件
+                    this.$emit('uploadSuccessPath', response.path)
+                    this.$emit('uploadSuccessFiles', this.fileList)
                 } else {
                     this.uploadErrorMessage = response.message.image;
-                    this.fileList = [];
                 }
             },
+            /**
+             * 上传失败
+             * @param err 错误信息
+             * @param file 文件信息
+             * @param fileList
+             */
             errorHandle(err, file, fileList) {
                 this.$message({
                     message: err,

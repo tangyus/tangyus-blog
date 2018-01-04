@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
 use App\Repositories\ArticleRepository;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -53,14 +55,17 @@ class ArticleController extends Controller
 
 	/**
 	 * 更新文章信息
-	 * @param Request $request
+	 * @param ArticleRequest $request
 	 * @param $id
 	 * @return mixed
 	 */
-	public function update(Request $request ,$id)
+	public function update(ArticleRequest $request ,$id)
 	{
 		$input = $request->all();
 		$article = Article::find($id);
+		if ($input['status'] == 20 && empty($input['published_at'])) {
+			$input['published_at'] = Carbon::now();
+		}
 
 		if ($article->fill($input)->save()) {
 			$data = ['success' => true, 'message' => '修改文章数据成功'];
@@ -70,10 +75,20 @@ class ArticleController extends Controller
 		return Response::json($data);
 	}
 
-	public function store(Request $request)
+	/**
+	 * 创建文章
+	 * @param ArticleRequest $request
+	 * @return mixed
+	 */
+	public function store(ArticleRequest $request)
 	{
 		$input = $request->all();
+
+		// 上传的tags数组还未处理
 		$input = array_merge($input, ['author_id' => Auth::id()]);
+		if ($input['status'] == 20) {
+			$input['published_at'] = Carbon::now();
+		}
 
 		$article = new Article();
 		if ($article->fill($input)->save()) {
@@ -81,6 +96,23 @@ class ArticleController extends Controller
 		} else {
 			$data = ['success' => false, 'message' => '创建文章失败'];
 		}
-		Response::json($data);
+		return Response::json($data);
+	}
+
+	/**
+	 * 删除文章
+	 * @param $id
+	 * @return mixed
+	 */
+	public function destroy($id)
+	{
+		$article = Article::findOrFail($id);
+
+		if ($article->delete()) {
+			$data = ['success' => true, 'message' => '删除文章成功'];
+		} else {
+			$data = ['success' => false, 'message' => '删除文章失败'];
+		}
+		return Response::json($data);
 	}
 }

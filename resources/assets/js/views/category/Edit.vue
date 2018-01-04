@@ -21,7 +21,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateCategory">保存修改</el-button>
-                        <router-link to="/admin/categories" class="el-button el-button--default">取消</router-link>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -50,6 +49,9 @@
             this.loadCategory();
         },
         methods: {
+            /**
+             * 加载分类信息
+             */
             loadCategory: function () {
                 var self = this;
                 this.$http.get('/category/' + this.$route.params.id + '/edit')
@@ -59,12 +61,16 @@
                             }
                         })
             },
+            /**
+             * 保存更新分类
+             */
             updateCategory() {
                 var self = this;
                 this.$refs['category'].validate(function (valid) {
                     if (valid) {
                         self.$http.patch('/category/' + self.$route.params.id, self.category)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
                                     if (response.data.errors) {
                                         for (var i in response.data.errors) {
                                             self.$message({

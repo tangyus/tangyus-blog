@@ -89,7 +89,10 @@
             this.loadArticle();
         },
         methods: {
-            // 加载用户列表
+            /**
+             * 加载文章列表
+             * @param page
+             */
             loadArticle: function (page) {
                 var self = this;
                 var url = page ? '/article?page=' + page : '/article';
@@ -103,18 +106,50 @@
                             }
                         })
             },
-            // 编辑文章
+            /**
+             * 编辑文章
+             * @param row
+             */
             editArticle: function (row) {
                 this.$router.push({
                     path: 'articles/' + row.id + '/edit'
                 });
             },
-            handleCurrentChange () {
+            /**
+             * 删除文章
+             * @param row
+             */
+            deleteArticle: function (row) {
+                var self = this;
+                self.$confirm('此操作将从数据库中永久删除, 请确认是否继续?', '疯狂提醒中...', {
+                            confirmButtonText: '继续',
+                            cancelButtonText: '取消',
+                            type: 'warning'
+                        }
+                ).then(() => {
+                    this.$http.delete('/article/' + row.id)
+                            .then(function (response) {
+                                self.$message({
+                                    message: response.data.message,
+                                    type: response.data.success ? 'success' : 'error',
+                                    showClose: true
+                                });
+                                if (response.data.success) {
+                                    self.loadArticle(self.currentPage);
+                                }
+                            })
+                    }
+                ).catch(() => {
+                });
+            },
+            /**
+             * 翻页
+             * @param val
+             */
+            handleCurrentChange (val) {
+                this.currentPage = val;
                 this.loadArticle(this.currentPage);
             }
         }
     }
 </script>
-
-<style>
-</style>

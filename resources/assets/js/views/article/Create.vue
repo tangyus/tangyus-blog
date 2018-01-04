@@ -6,12 +6,12 @@
         </div>
         <el-row>
             <el-col :span="16" :offset="4">
-                <el-form ref="article" :model="article" label-width="80px">
-                    <el-form-item label="文章标题">
-                        <el-input v-model="article.title" placeholder="请输入文章标题" clearable></el-input>
+                <el-form ref="article" :model="article" :rules="rules" label-width="80px">
+                    <el-form-item label="文章标题" prop="title">
+                        <el-input v-model="article.title" placeholder="请输入标题" clearable></el-input>
                     </el-form-item>
-                    <el-form-item label="文章分类">
-                        <el-select v-model="category_id" clearable placeholder="请选择文章分类">
+                    <el-form-item label="文章分类" prop="category_id">
+                        <el-select v-model="category_id" clearable placeholder="请选择分类">
                             <el-option
                                     v-for="item in categoryList"
                                     :key="item.id"
@@ -20,7 +20,7 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="文章标签">
+                    <el-form-item label="文章标签" prop="articleTags">
                         <el-select v-model="articleTags" multiple placeholder="请选择文章标签">
                             <el-option
                                     v-for="item in tagList"
@@ -30,24 +30,11 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="文章内容">
-                        <el-input type="textarea" :rows="10" placeholder="请输入文章内容" v-model="article.content"
-                                  clearable></el-input>
+                    <el-form-item label="文章内容" prop="content">
+                        <markdown-editor v-model="article.content" ref="markdownEditor" :configs="configs"></markdown-editor>
                     </el-form-item>
-                    <el-form-item label="文章图片">
-                        <el-upload
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove"
-                                :before-remove="beforeRemove"
-                                multiple
-                                :limit="3"
-                                :on-exceed="handleExceed"
-                                :file-list="fileList">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                        </el-upload>
+                    <el-form-item label="文章图片" prop="article_image">
+                        <image-upload :image_path="article.article_image" :files="articleFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item label="是否原创">
                         <template>
@@ -58,12 +45,11 @@
                     <el-form-item label="是否草稿">
                         <template>
                             <el-radio v-model="article.status" label="10">草稿</el-radio>
-                            <el-radio v-model="article.status" label="20">已发表</el-radio>
+                            <el-radio v-model="article.status" label="20">发表</el-radio>
                         </template>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="saveArticle()">保存</el-button>
-                        <el-button type="default" @click="resetArticleForm">重置</el-button>
+                        <el-button type="primary" @click="saveArticle()">创建保存</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -72,7 +58,14 @@
 </template>
 
 <script>
+    import markdownEditor from 'vue-simplemde/src/markdown-editor'
+    import ImageUpload from '../../dashboard/ImageUpload.vue';
+
     export default {
+        components: {
+            ImageUpload,
+            markdownEditor
+        },
         data() {
             return {
                 article: {
@@ -82,18 +75,34 @@
                 categoryList: [],
                 tagList: [],
                 articleTags: [],
+                articleFileList: [],
                 category_id: undefined,
-                fileList: [
-                    {
-                        name: 'food.jpeg',
-                        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-                    },
-                ]
+                rules: {
+                    title: [
+                        { required: true, message: '请输入文章标题', trigger: 'blur' },
+                        { min: 10, max: 30, message: '长度在 10 到 30 个字符', trigger: 'blur' }
+                    ],
+                    category_id: [
+                        { required: true, message: '请选择文章分类', trigger: 'blur' }
+                    ],
+                    articleTags: [
+                        { required: true, message: '请至少选择一个文章标签', trigger: 'blur' }
+                    ],
+                    content: [
+                        { required: true, message: '请输入文章内容', trigger: 'blur' }
+                    ]
+                },
+                configs: {
+                    spellChecker: false // 禁用拼写检查
+                }
             }
         },
         created () {
             this.loadCategory();
         },
+        /**
+         * 监听分类变化，取出相应分类下的标签信息
+         */
         watch: {
             category_id: function (newVal) {
                 var self = this;
@@ -124,42 +133,50 @@
                         .then(function (response) {
                             if (response.data.success) {
                                 self.tagList = response.data.data;
-                                console.log(self.tagList);
                             }
                         })
             },
             /**
-             * 保存文章
+             * 保存更新文章
              */
             saveArticle: function () {
                 var self = this;
                 this.article.category_id = this.category_id;
-                this.$http.post('/article', this.article)
-                        .then(function (response) {
-                            self.$message({
-                                message: response.data.message,
-                                type: response.data.success ? 'success' : 'error',
-                                showClose: true
-                            });
-                        })
+                this.article.articleTags = this.articleTags;
+                this.$refs['article'].validate(function (valid) {
+                    if (valid) {
+                        self.$http.post('/article', self.article)
+                                .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
+                                    if (response.data.errors) {
+                                        for (var i in response.data.errors) {
+                                            self.$message({
+                                                message: response.data.errors[i][0],
+                                                type: 'error',
+                                                showClose: true
+                                            });
+                                        }
+                                        return false;
+                                    }
+
+                                    self.$message({
+                                        message: response.data.message,
+                                        type: response.data.success ? 'success' : 'error',
+                                        showClose: true
+                                    });
+                                })
+                    }
+                });
             },
             /**
-             * 重置文章创建表单
+             * 子组件上传图片成功后返回的图片路径以及图片列表
+             * @param imagePath
              */
-            resetArticleForm() {
-                this.$refs['article'].resetFields();
+            getUploadImagePath(imagePath) {
+                this.article.article_image = imagePath;
             },
-            handleRemove(file, fileList) {
-                console.log(file, fileList);
-            },
-            handlePreview(file) {
-                console.log(file);
-            },
-            handleExceed(files, fileList) {
-                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-            },
-            beforeRemove(file, fileList) {
-                return this.$confirm(`确定移除 ${ file.name }？`);
+            getUploadFiles(files) {
+                this.articleFileList = files;
             }
         }
     }

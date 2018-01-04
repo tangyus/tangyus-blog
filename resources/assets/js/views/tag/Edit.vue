@@ -24,7 +24,6 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="updateTag">保存修改</el-button>
-                        <el-button @click="resetForm">重置</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
@@ -54,6 +53,9 @@
             this.loadCategory();
         },
         methods: {
+            /**
+             * 加载当前ID标签信息
+             */
             loadTag: function () {
                 var self = this;
                 this.$http.get('/tag/' + this.$route.params.id + '/edit')
@@ -63,6 +65,9 @@
                             }
                         })
             },
+            /**
+             * 加载所有分类信息
+             */
             loadCategory: function () {
                 var self = this;
                 this.$http.post('/category/all')
@@ -72,12 +77,16 @@
                             }
                         })
             },
+            /**
+             * 保存更新标签信息
+             */
             updateTag() {
                 var self = this;
                 this.$refs['tag'].validate(function (valid) {
                     if (valid) {
                         self.$http.patch('/tag/' + self.$route.params.id, self.tag)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
                                     if (response.data.errors) {
                                         for (var i in response.data.errors) {
                                             self.$message({
@@ -96,9 +105,6 @@
                                 })
                     }
                 });
-            },
-            resetForm() {
-                this.$refs['tag'].resetFields();
             }
         }
     }

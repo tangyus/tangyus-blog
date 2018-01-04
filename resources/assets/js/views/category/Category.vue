@@ -72,6 +72,10 @@
             this.loadCategory();
         },
         methods: {
+            /**
+             * 加载分类信息
+             * @param page
+             */
             loadCategory: function (page) {
                 var self = this;
                 var url = page ? '/category?page=' + page : '/category';
@@ -85,11 +89,19 @@
                             }
                         })
             },
+            /**
+             * 编辑分类
+             * @param row
+             */
             editCategory: function (row) {
                 this.$router.push({
                     path: 'categories/' + row.id + '/edit'
                 });
             },
+            /**
+             * 删除分类
+             * @param row
+             */
             deleteCategory: function (row) {
                 var self = this;
                 self.$confirm('此操作将从数据库中永久删除, 请确认是否继续?', '疯狂提醒中...', {
@@ -112,7 +124,10 @@
                     ).catch(() => {
                     });
             },
-            // 翻页
+            /**
+             * 翻页
+             * @param val
+             */
             handleCurrentChange(val) {
                 this.currentPage = val;
                 this.loadCategory(val);
