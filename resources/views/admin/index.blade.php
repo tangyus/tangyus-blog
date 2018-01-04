@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/simplemde.css" />
 
     <script type="text/javascript">
         window.Laravel = {
@@ -30,5 +31,6 @@
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>
     <script src="/js/app.js"></script>
+    <script src="/js/simplemde.js"></script>
 </body>
 </html>
