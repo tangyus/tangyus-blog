@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
+use App\Models\ArticleTag;
 use App\Repositories\ArticleRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class ArticleController extends Controller
@@ -62,17 +64,31 @@ class ArticleController extends Controller
 	public function update(ArticleRequest $request ,$id)
 	{
 		$input = $request->all();
+
 		$article = Article::find($id);
+        $articleTags = new ArticleTag();
 		if ($input['status'] == 20 && empty($input['published_at'])) {
 			$input['published_at'] = Carbon::now();
 		}
 
-		if ($article->fill($input)->save()) {
-			$data = ['success' => true, 'message' => '修改文章数据成功'];
-		} else {
-			$data = ['success' => false, 'message' => '修改文章数据失败'];
-		}
-		return Response::json($data);
+        foreach ($input['articleTags'] as $key => $value) {
+            $articleTagsData[$key]['article_id'] = $id;
+            $articleTagsData[$key]['tag_id'] = $value;
+        }
+
+        $article->fill($input);
+        $articleTags->fill($articleTagsData);
+        DB::transaction(function () use ($article, $articleTagsData) {
+            $article->save();
+            DB::table('article_tags')->insert($articleTagsData);
+        });
+
+//		if ($article->fill($input)->save()) {
+//			$data = ['success' => true, 'message' => '修改文章数据成功'];
+//		} else {
+//			$data = ['success' => false, 'message' => '修改文章数据失败'];
+//		}
+		return Response::json(['success' => true, 'message' => '修改文章数据成功']);
 	}
 
 	/**
@@ -86,6 +102,7 @@ class ArticleController extends Controller
 
 		// 上传的tags数组还未处理
 		$input = array_merge($input, ['author_id' => Auth::id()]);
+        dd($input);
 		if ($input['status'] == 20) {
 			$input['published_at'] = Carbon::now();
 		}
