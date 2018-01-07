@@ -27,19 +27,6 @@
     </el-row>
 </template>
 
-<script>
-    export default {
-        methods: {
-            handleOpen(key, keyPath) {
-                console.log(key, keyPath);
-            },
-            handleClose(key, keyPath) {
-                console.log(key, keyPath);
-            }
-        }
-    }
-</script>
-
 <style lang="scss" scoped>
     .tac {
         width: 200px;
@@ -53,6 +40,11 @@
             margin-top: 100px;
 
             .el-menu {
+                .el-menu-vertical-demo:not(.el-menu--collapse) {
+                    width: 200px;
+                    min-height: 400px;
+                }
+
                 .el-menu-item a {
                     display: block;
                     height: 100%;

@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\ArticleRequest;
 use App\Models\Article;
-use App\Models\ArticleTag;
 use App\Repositories\ArticleRepository;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -65,30 +65,58 @@ class ArticleController extends Controller
 	{
 		$input = $request->all();
 
-		$article = Article::find($id);
-        $articleTags = new ArticleTag();
+		$article = Article::with('articleTags')->find($id);
 		if ($input['status'] == 20 && empty($input['published_at'])) {
 			$input['published_at'] = Carbon::now();
 		}
 
-        foreach ($input['articleTags'] as $key => $value) {
-            $articleTagsData[$key]['article_id'] = $id;
-            $articleTagsData[$key]['tag_id'] = $value;
-        }
+		// 原先文章的标签ID
+		$oldArticleTagsId = array();
+		$oldArticleTags = $article->toArray()['article_tags'];
+		if (!empty($oldArticleTags)) {
+			foreach ($oldArticleTags as $value) {
+				$oldArticleTagsId[] = $value['tag_id'];
+			}
+		}
 
-        $article->fill($input);
-        $articleTags->fill($articleTagsData);
-        DB::transaction(function () use ($article, $articleTagsData) {
-            $article->save();
-            DB::table('article_tags')->insert($articleTagsData);
-        });
+		DB::beginTransaction();
+		try {
+			// 修改文章信息
+			$article->fill($input)->save();
+			$needAddTagIds = array_diff($input['articleTags'], $oldArticleTagsId);// 需要新增的标签
+			$needDeleteTagIds = array_diff($oldArticleTagsId, $input['articleTags']);//需要删除的标签
 
-//		if ($article->fill($input)->save()) {
-//			$data = ['success' => true, 'message' => '修改文章数据成功'];
-//		} else {
-//			$data = ['success' => false, 'message' => '修改文章数据失败'];
-//		}
-		return Response::json(['success' => true, 'message' => '修改文章数据成功']);
+			// 新增标签
+			if (!empty($needAddTagIds)) {
+				$i = 0;
+				foreach ($needAddTagIds as $value) {
+					$addArticleTagsData[$i]['article_id'] = $id;
+					$addArticleTagsData[$i]['tag_id'] = $value;
+					$addArticleTagsData[$i]['created_at'] = Carbon::now();
+					$addArticleTagsData[$i]['updated_at'] = $addArticleTagsData[$i]['created_at'];
+					$i++;
+				}
+
+				DB::table('article_tags')->insert($addArticleTagsData);
+			}
+
+			// 删除标签
+			if (!empty($needDeleteTagIds)) {
+				foreach ($needDeleteTagIds as $value) {
+					$deleteTagIds[] = $value;
+				}
+
+				DB::table('article_tags')->where('article_id', $id)->whereIn('tag_id', $deleteTagIds)->delete();
+			}
+
+
+			DB::commit();
+			$data = ['success' => true, 'message' => '修改文章数据成功'];
+		} catch (QueryException $e) {
+			DB::rollback();
+			$data = ['success' => false, 'message' => '修改文章数据失败'];
+		}
+		return Response::json($data);
 	}
 
 	/**
@@ -100,17 +128,29 @@ class ArticleController extends Controller
 	{
 		$input = $request->all();
 
-		// 上传的tags数组还未处理
 		$input = array_merge($input, ['author_id' => Auth::id()]);
-        dd($input);
 		if ($input['status'] == 20) {
 			$input['published_at'] = Carbon::now();
 		}
 
-		$article = new Article();
-		if ($article->fill($input)->save()) {
+		DB::beginTransaction();
+		try {
+			$article = Article::create($input);
+			if ($article) {
+				foreach ($input['articleTags'] as $key => $value) {
+					$articleTagsData[$key]['article_id'] = $article->id;
+					$articleTagsData[$key]['tag_id'] = $value;
+					$articleTagsData[$key]['created_at'] = Carbon::now();
+					$articleTagsData[$key]['updated_at'] = $articleTagsData[$key]['created_at'];
+				}
+
+				DB::table('article_tags')->insert($articleTagsData);
+			}
+
+			DB::commit();
 			$data = ['success' => true, 'message' => '创建文章成功'];
-		} else {
+		} catch (QueryException $e) {
+			DB::rollback();
 			$data = ['success' => false, 'message' => '创建文章失败'];
 		}
 		return Response::json($data);

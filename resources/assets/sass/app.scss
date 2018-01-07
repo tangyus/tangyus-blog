@@ -25,18 +25,51 @@ body {
 
 /* 文章样式 */
 #article {
-  li {
+  .list-group-item {
     margin-bottom: 30px;
     border: none;
     border-bottom: 1px solid #dadada;
+
+    .row {
+      position: relative;
+    }
 
     .article-img {
       height: 200px;
       display: block;
       margin-top: 20px;
     }
+
+    .publish-time {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin: -10px auto;
+
+      p {
+        line-height: 30px;
+        height: 30px;
+        font-size: 14px;
+
+        span {
+          margin: auto 15px;
+          color: #999;
+          font-size: 14px;
+        }
+      }
+    }
   }
 
+  .title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a {
+      text-decoration: none;
+      color: #111;
+    }
+  }
   .content {
     overflow: hidden;
     line-height: 30px;
@@ -45,11 +78,59 @@ body {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4
   }
+
+  .pagination {
+    float: right;
+  }
+}
+
+#article-detail {
+  .image-block {
+    margin: 20px auto;
+  }
+
+  .article-desc {
+    background: #edf4ed;
+    margin-top: 15px;
+
+    h3 {
+      display: inline-block;
+      text-indent: 10px;
+    }
+
+    p {
+      line-height: 40px;
+      height: 40px;
+      font-size: 14px;
+      text-indent: 10px;
+
+      span {
+        margin: auto 10px;
+        color: #999;
+      }
+
+      a {
+        text-decoration: none;
+        border-color: #fae7e8;
+        background: rgba(253,76,91,0.1);
+        color: #fd4c5b;
+        line-height: 26px;
+        height: 26px;
+        display: inline-block;
+        border-radius: 5px;
+        padding: 0 10px;
+        text-indent: 0;
+      }
+    }
+  }
 }
 
 #sidebar {
   padding: 0;
 
+  .panel {
+    margin-top: 10px;
+  }
   .panel-body {
     padding: 0;
 

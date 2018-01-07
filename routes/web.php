@@ -11,18 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('articles.index');
-});
+// laravel 自带登录注册
+Auth::routes();
+
+Route::get('/', 'IndexController@index');
+
+Route::get('article/{article}/{slug?}', 'ArticleController@index')->name('article.index');
+
 
 /* Dashboard Index */
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function () {
 	Route::get('{path?}', function () {
 		return view('admin.index');
-	})->where('path', '[\/\w\.-]*');
+	})->where('path', '[\/\w\.-]*')->name('admin');
 });
-
-// laravel 自带登录注册
-Auth::routes();
 
 Route::post('upload', 'UploadController@fileUpload');

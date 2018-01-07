@@ -35,7 +35,7 @@ export default [
 		children: [
 			{
 				path: '/',
-				redirect: '/admin/index'
+				redirect: '/admin/users'
 			},
 			{
 				path: 'index',

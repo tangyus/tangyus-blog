@@ -164,6 +164,12 @@
                                         type: response.data.success ? 'success' : 'error',
                                         showClose: true
                                     });
+
+                                    if (response.data.success) {
+                                        self.$router.push({
+                                            path: '/admin/articles'
+                                        })
+                                    }
                                 })
                     }
                 });

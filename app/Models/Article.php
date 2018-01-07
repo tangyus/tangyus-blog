@@ -20,4 +20,14 @@ class Article extends Model
 	{
 		return $this->hasMany(ArticleTag::class);
 	}
+
+	/**
+	 * 利于SEO优化的链接
+	 * @param array $params
+	 * @return string
+	 */
+	public function link($params = [])
+	{
+		return route('article.index', array_merge([$this->id, $this->slug], $params));
+	}
 }
