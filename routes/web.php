@@ -15,11 +15,9 @@
 Auth::routes();
 
 Route::get('/', 'IndexController@index');
+Route::get('archive', 'IndexController@archive')->name('archive');
 
 Route::get('article/{article}/{slug?}', 'ArticleController@index')->name('article.index');
-Route::get('archive', function () {
-    return view('articles.archive');
-})->name('archive');
 
 
 /* Dashboard Index */

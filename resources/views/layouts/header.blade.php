@@ -13,8 +13,8 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">文章归档</a></li>
+                <li class="active"><a href="/">首页 <span class="sr-only">(current)</span></a></li>
+                <li><a href="{{ route('archive') }}">文章归档</a></li>
                 <li><a href="#">学习笔记</a></li>
             </ul>
 

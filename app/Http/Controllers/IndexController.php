@@ -22,5 +22,10 @@ class IndexController extends Controller
 		return view('articles.index', compact('articles', 'categories', 'links'));
     }
 
+	public function archive()
+	{
+		$articles = Article::orderBy('published_at', 'desc')->paginate(10);
 
+		return view('articles.archive', compact('articles'));
+	}
 }
