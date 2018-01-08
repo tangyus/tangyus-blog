@@ -12,27 +12,28 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
+        $now = \Carbon\Carbon::now();
         $categories = [
             [
                 'name' => 'PHP',
                 'desc' => '世界上最好的语言',
                 'article_count' => 0,
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'javascript',
                 'desc' => null,
                 'article_count' => 0,
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'mysql',
                 'desc' => null,
                 'article_count' => 0,
-                'created_at' => \Carbon\Carbon::now(),
-                'updated_at' => \Carbon\Carbon::now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
         ];
 

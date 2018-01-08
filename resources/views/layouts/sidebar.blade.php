@@ -1,9 +1,9 @@
 <div class="panel text-center">
     <div class="panel-body">
         <div class="list-group">
-            <a href="#" class="list-group-item">我的分类</a>
+            <a href="#" class="list-group-item">文章分类</a>
             @foreach($categories as $category)
-                <a href="#" class="list-group-item">{{ $category->name }}</a>
+                <a href="#" class="list-group-item">{{ $category->name }}<span class="badge">{{ $category->article_count }}</span></a>
             @endforeach
         </div>
     </div>
