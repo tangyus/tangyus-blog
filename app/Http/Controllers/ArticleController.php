@@ -14,9 +14,11 @@ class ArticleController extends Controller
 	{
 		$article = Article::with(['category', 'articleTags'])->findOrFail($id);
 
+        // markdown解析
 		$parseDown = new \Parsedown();
 		$article->content = $parseDown->text($article->content);
 
+        $tagIds = array();
 		foreach ($article->articleTags->toArray() as $value) {
 			$tagIds[] = $value['tag_id'];
 		}

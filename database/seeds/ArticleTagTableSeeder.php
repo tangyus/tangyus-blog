@@ -11,6 +11,6 @@ class ArticleTagTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\ArticleTag::class, 30)->create();
+//        factory(\App\Models\ArticleTag::class, 30)->create();
     }
 }

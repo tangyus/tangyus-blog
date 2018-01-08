@@ -12,6 +12,11 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">首页 <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">文章归档</a></li>
+                <li><a href="#">学习笔记</a></li>
+            </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 @if (Auth::user() && Auth::user()->is_admin)
@@ -40,6 +45,8 @@
                             </li>
                         </ul>
                     </li>
+                @else
+                    <li><a href="#">关于我</a></li>
                 @endif
             </ul>
 

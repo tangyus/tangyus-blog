@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CategoryTableSeeder extends Seeder
 {
@@ -11,6 +12,30 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(\App\Models\Category::class, 4)->create();
+        $categories = [
+            [
+                'name' => 'PHP',
+                'desc' => '世界上最好的语言',
+                'article_count' => 0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ],
+            [
+                'name' => 'javascript',
+                'desc' => null,
+                'article_count' => 0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ],
+            [
+                'name' => 'mysql',
+                'desc' => null,
+                'article_count' => 0,
+                'created_at' => \Carbon\Carbon::now(),
+                'updated_at' => \Carbon\Carbon::now(),
+            ],
+        ];
+
+        DB::table('categories')->insert($categories);
     }
 }
