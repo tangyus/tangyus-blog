@@ -16,6 +16,7 @@ Auth::routes();
 
 Route::get('/', 'IndexController@index');
 Route::get('archive', 'IndexController@archive')->name('archive');
+Route::get('link', 'IndexController@link')->name('link');
 
 Route::get('article/{article}/{slug?}', 'ArticleController@index')->name('article.index');
 

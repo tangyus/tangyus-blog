@@ -37,6 +37,7 @@ $factory->define(App\Models\Category::class, function (Faker $faker) {
 $factory->define(App\Models\Article::class, function (Faker $faker) {
 	$category_ids = \App\Models\Category::pluck('id')->random();
 	$paragraph = $faker->paragraph(4);
+
 	return [
 		'title' => $faker->sentence,
 		'content' => $paragraph,

@@ -6,8 +6,8 @@
             @foreach($articles as $article)
                 <li>
                     <div class="desc">
-                        <span>{{ $article->published_at }}</span>
-                        <h3><a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a></h3>
+                        <span>{{ intercept_str($article->published_at) }}</span>
+                        <span><a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a></>
                     </div>
                 </li>
             @endforeach
@@ -16,9 +16,3 @@
         {{ $articles->links() }}
     </div>
 @endsection
-<style type="text/css" lang="scss">
-    * {
-        margin: 0;
-        padding: 0;
-    }
-</style>

@@ -12,7 +12,7 @@
 <div class="panel text-center">
     <div class="panel-body">
         <div class="list-group">
-            <a href="#" class="list-group-item">友情链接</a>
+            <a href="{{ route('link') }}" class="list-group-item">友情链接</a>
             @foreach($links as $link)
             <a href="{{ $link->site }}" target="_blank" class="list-group-item">{{ $link->name }}</a>
             @endforeach
