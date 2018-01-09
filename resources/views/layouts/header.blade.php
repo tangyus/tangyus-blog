@@ -46,7 +46,7 @@
                         </ul>
                     </li>
                 @else
-                    <li><a href="#">关于我</a></li>
+                    <li><a href="{{ route('about') }}">关于我</a></li>
                 @endif
             </ul>
 

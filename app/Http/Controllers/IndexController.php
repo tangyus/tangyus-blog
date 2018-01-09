@@ -29,8 +29,8 @@ class IndexController extends Controller
 		return view('articles.archive', compact('articles'));
 	}
 
-    public function link()
-    {
-        return view('articles.links');
+	public function about()
+	{
+		return view('articles.about');
 	}
 }
