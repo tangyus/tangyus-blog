@@ -37,5 +37,6 @@ Route::group([
     // 友链路由
     Route::resource('link', 'LinkController', ['except' => ['show', 'create']]);
 
-	Route::post('upload', 'CommonController@fileUpload');
+	Route::get('link/exchange', 'LinkController@exchangeLink');
+    Route::post('link/checkExchangeLink/{exchange_link}', 'LinkController@checkExchangeLink');
 });

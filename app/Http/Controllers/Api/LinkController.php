@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\LinkRequest;
+use App\Models\ExchangeLink;
 use App\Models\Link;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -100,5 +101,39 @@ class LinkController extends Controller
         }
 
         return Response::json($data);
+    }
+
+    /**
+     * 获取互换友链
+     * @return mixed
+     */
+    public function exchangeLink()
+    {
+        $exchangeLinks = ExchangeLink::paginate(10);
+
+        if (!empty($exchangeLinks)) {
+            $data = ['success' => true, 'message' => '获取友链互换数据成功', 'data' => $exchangeLinks];
+        } else {
+            $data = ['success' => false, 'message' => '获取友链互换数据失败', 'data' => []];
+        }
+
+        return Response::json($data);
+    }
+
+    public function checkExchangeLink(Request $request, $id)
+    {
+        $status = $request->input('status');
+
+        $exchangeLink = ExchangeLink::findOrFail($id);
+        $exchangeLink->status = $status;
+        $exchangeLink->save();
+
+        if ($status == 20) {
+            // 通过审核
+            $exchangeLink->save();
+
+        } elseif ($status == 10) {
+            // 拒绝通过
+        }
     }
 }

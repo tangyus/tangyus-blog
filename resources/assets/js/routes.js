@@ -25,6 +25,7 @@ import TagCreate from './views/tag/Create.vue';
 import LinkIndex from './views/link/Link.vue';
 import LinkEdit from './views/link/Edit.vue';
 import LinkCreate from './views/link/Create.vue';
+import ExchangeLink from './views/link/Exchange.vue';
 
 import Mark from './dashboard/Mark.vue';
 
@@ -129,6 +130,16 @@ export default [
                         path: ':id/edit',
                         component: LinkEdit
                     },
+                ]
+            },
+            {
+                path: 'exchange_links',
+                component: Parent,
+                children: [
+                    {
+                        path: '/',
+                        component: ExchangeLink
+                    }
                 ]
             }
 		]

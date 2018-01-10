@@ -19,6 +19,7 @@ class CreateExchangeLinksTable extends Migration
 			$table->string('blog_site', 32);
 			$table->string('email', 32);
 			$table->text('message')->nullable();
+            $table->enum('is_checked', ['','10', 20])->default('');
             $table->timestamps();
         });
     }
