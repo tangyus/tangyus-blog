@@ -11,7 +11,7 @@
                         {{ $article->published_at }}
                     </span>
                     <span>分类:</span>
-                    <a href="#">{{ $article->category->name }}</a>
+                    <a href="{{ route('categories', $article->category->id) }}" title="{{ $article->category->name }}">{{ $article->category->name }}</a>
                     <span>标签:</span>
                     @foreach($tags as $tag)
                         <a href="#"># {{ $tag->name }}</a>
@@ -24,10 +24,6 @@
             <div>
                 {!! $article->content !!}
             </div>
-        </div>
-
-        <div class="col-md-2 col-md-offset-1" id="sidebar">
-            @include('layouts.sidebar')
         </div>
     </div>
 @endsection

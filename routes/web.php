@@ -16,8 +16,9 @@ Auth::routes();
 
 Route::get('/', 'IndexController@index');
 Route::get('archive', 'IndexController@archive')->name('archive');
-Route::get('link', 'LinkController@index')->name('link');
-Route::post('link/exchange', 'LinkController@exchange');
+Route::get('links', 'LinkController@index')->name('links');
+Route::post('links/exchange', 'LinkController@exchange');
+Route::get('categories/{article?}', 'ArticleController@categories')->name('categories');
 Route::get('about', 'IndexController@about')->name('about');
 
 Route::get('article/{article}/{slug?}', 'ArticleController@index')->name('article.index');

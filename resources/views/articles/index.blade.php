@@ -28,7 +28,7 @@
                                 <p>
                                     发布于：<span>{{ $article->published_at }}</span>
                                     阅读：<span>{{ $article->view_count }}</span>
-                                    <a class="btn btn-primary btn-sm pull-right" href="{{ $article->link() }}" role="button">阅读更多</a>
+                                    <a class="btn btn-primary btn-sm pull-right" href="{{ $article->link() }}" role="button" style="color: #fff;">阅读更多</a>
                                 </p>
                             </div>
                         </div>

@@ -8,6 +8,7 @@
 html {
   position: relative;
   min-height: 100%;
+  //background: #edf5f9
 }
 
 body {
@@ -44,6 +45,23 @@ body {
         color: #333;
       }
     }
+  }
+}
+#app {
+  .badge {
+    padding: 0px 12px;
+    line-height: 22px;
+    height: 22px;
+    color: #FF7055;
+    background: #edf5f9;
+  }
+
+  a {
+    color: #333;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #FF7055;
   }
 }
 
@@ -220,19 +238,84 @@ body {
       min-width: 85px;
       padding: 0 5px;
       margin: 5px 0;
-
-      a {
-        color: #333;
-        text-decoration: none;
-      }
-      a:hover {
-        color: #FF7055;
-      }
     }
   }
 
   .form-group {
     padding: 0;
+  }
+}
+
+/* 分类页面样式 */
+#categories {
+  .category-item {
+    min-height: 100px;
+    border: 1px solid #ccd0d2;
+    border-radius: 10px;
+    text-indent: 10px;
+    padding: 0;
+    margin: 30px 47px 20px 48px;
+
+    .title {
+      .name {
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      .desc {
+        font-size: 16px;
+      }
+
+      p {
+        margin: 0;
+        line-height: 40px;
+        height: 40px;
+
+        span {
+          text-indent: 0;
+        }
+      }
+    }
+
+    .tags {
+      min-height: 100px;
+      text-align: center;
+      border-top: 1px solid #ccd0d2;
+
+      span {
+        line-height: 40px;
+        height: 40px;
+        //display: inline-block;
+        min-width: 85px;
+        max-width: 33.333333%;
+        padding: 0 5px;
+        margin: 5px 0;
+      }
+    }
+  }
+
+  .category-article {
+    border-top: 1px solid #ccd0d2;
+    padding: 0;
+    margin-bottom: 10px;
+
+    .title {
+      margin: 0;
+      line-height: 50px;
+      font-size: 20px;
+      height: 50px;
+    }
+
+    .content {
+      margin: 0;
+      text-indent: 20px;
+      overflow: hidden;
+      line-height: 40px;
+      font-size: 16px;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
   }
 }
 

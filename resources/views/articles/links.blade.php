@@ -26,7 +26,7 @@
                 {{ Session::get('message') }}
             </div>
         @endif
-        <form action="/link/exchange" method="post">
+        <form action="/links/exchange" method="post">
             {{ csrf_field() }}
             <div class="form-group col-md-8">
                 <label for="blog_name">博客名称</label>

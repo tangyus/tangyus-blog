@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class IndexController extends Controller
 {
+    /**
+     * 首页
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function index()
 	{
 		$articles = Article::orderBy('published_at', 'desc')->paginate(5);
@@ -22,6 +26,10 @@ class IndexController extends Controller
 		return view('articles.index', compact('articles', 'categories', 'links'));
     }
 
+    /**
+     * 文章归档页面
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function archive()
 	{
 		$articles = Article::orderBy('published_at', 'desc')->paginate(10);
