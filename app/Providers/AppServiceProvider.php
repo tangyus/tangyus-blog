@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Article;
+use App\Models\ExchangeLink;
+use App\Notifications\ExchangeLinkSucceeded;
 use App\Observer\ArticleObserver;
+use App\Observer\ExchangeLinkObserver;
 use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
@@ -18,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Carbon::setLocale('zh');
         Article::observe(ArticleObserver::class);
+		ExchangeLink::observe(ExchangeLinkObserver::class);
     }
 
     /**

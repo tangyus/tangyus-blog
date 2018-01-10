@@ -23,7 +23,7 @@
                     <router-link to="/admin/links"><i class="fa fa-paper-plane" aria-hidden="true"></i>友链管理</router-link>
                 </el-menu-item>
                 <el-menu-item index="6">
-                    <router-link to="/admin/exchange_links"><i class="fa fa-paper-plane" aria-hidden="true"></i>友链互换</router-link>
+                    <router-link to="/admin/exchange_links"><i class="fa fa-code-fork" aria-hidden="true"></i>友链互换</router-link>
                 </el-menu-item>
             </el-menu>
         </el-col>

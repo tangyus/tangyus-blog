@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\LinkRequest;
 use App\Models\ExchangeLink;
 use App\Models\Link;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
 
 class LinkController extends Controller
@@ -120,20 +122,39 @@ class LinkController extends Controller
         return Response::json($data);
     }
 
+	/**
+	 * 审核友链申请
+	 * @param Request $request
+	 * @param $id
+	 * @return mixed
+	 */
     public function checkExchangeLink(Request $request, $id)
     {
-        $status = $request->input('status');
+        $is_checked = $request->input('is_checked');
 
-        $exchangeLink = ExchangeLink::findOrFail($id);
-        $exchangeLink->status = $status;
-        $exchangeLink->save();
+		DB::beginTransaction();
+		try {
+			$exchangeLink = ExchangeLink::findOrFail($id);
+			$exchangeLink->is_checked = $is_checked;
+			$exchangeLink->save();
 
-        if ($status == 20) {
-            // 通过审核
-            $exchangeLink->save();
+			// 通过审核，插入link表数据
+			if ($is_checked == 20) {
+				$link = [
+					'name' => $exchangeLink->blog_name,
+					'site' => $exchangeLink->blog_site
+				];
 
-        } elseif ($status == 10) {
-            // 拒绝通过
-        }
+				Link::create($link);
+			}
+
+			DB::commit();
+			$data = ['success' => true, 'message' => '审核成功'];
+		} catch (QueryException $e) {
+			DB::rollback();
+			$data = ['success' => false, 'message' => '审核失败'];
+		}
+
+		return Response::json($data);
     }
 }

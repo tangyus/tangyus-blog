@@ -254,4 +254,8 @@
     input[type="file"] {
         display: none;
     }
+
+    .markdown-editor .CodeMirror {
+        height: 700px;
+    }
 </style>

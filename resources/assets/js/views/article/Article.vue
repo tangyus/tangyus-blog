@@ -43,6 +43,10 @@
             <el-table-column
                     prop="status"
                     label="发表状态">
+                <template scope="scope">
+                    <span v-if="scope.row.status == 10">草稿</span>
+                    <span v-else-if="scope.row.status == 20">已发布</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="published_at"

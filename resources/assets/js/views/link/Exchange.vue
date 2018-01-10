@@ -26,13 +26,18 @@
             <el-table-column
                     prop="status"
                     label="审核状态">
+                <template scope="scope">
+                    <span v-if="scope.row.is_checked == 10">审核拒绝</span>
+                    <span v-else-if="scope.row.is_checked == 20">审核通过</span>
+                    <span v-else>等待审核</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="created_at"
                     label="提交时间">
             </el-table-column>
             <el-table-column label="操作" width="200">
-                <template slot-scope="scope">
+                <template slot-scope="scope" v-if="!scope.row.is_checked">
                     <el-button
                             size="mini"
                             type="primary"
@@ -93,16 +98,16 @@
              * 删除友链
              * @param row
              */
-            check: function (row, status) {
+            check: function (row, is_checked) {
                 var self = this;
-                var message = status == 10 ? '拒绝通过?' : '通过审核?'
+                var message = is_checked == 10 ? '拒绝通过?' : '通过审核?'
                 self.$confirm(message, '疯狂提醒中...', {
                             confirmButtonText: '继续',
                             cancelButtonText: '取消',
                             type: 'warning'
                         }
                 ).then(() => {
-                            this.$http.post('/link/checkExchangeLink/' + row.id, {status: status})
+                            this.$http.post('/link/checkExchangeLink/' + row.id, {is_checked: is_checked})
                                     .then(function (response) {
                                         self.$message({
                                             message: response.data.message,
