@@ -21,7 +21,7 @@
             <div class="image-block">
                 <img src="{{ asset($article->article_image) }}" alt="" width="100%" height="100%">
             </div>
-            <div>
+            <div class="content">
                 {!! $article->content !!}
             </div>
         </div>

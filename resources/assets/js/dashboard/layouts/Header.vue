@@ -24,7 +24,6 @@
         padding-left: 200px;
         width: 100%;
         height: 60px;
-        z-index: 20;
         transition: padding .3s;
 
         .menu-nav {

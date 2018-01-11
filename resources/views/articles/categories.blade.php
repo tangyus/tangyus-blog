@@ -31,9 +31,9 @@
                         <p class="title">
                             <a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a>
                         </p>
-                        <p class="content">
-                            {{ $article->content }}
-                        </p>
+                        <div class="content">
+                            {!! $article->content !!}
+                        </div>
                     </div>
                 @endforeach
 

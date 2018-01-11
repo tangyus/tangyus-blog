@@ -54,6 +54,13 @@ class ArticleController extends Controller
             $articles = Article::where('category_id', $categories[0]->id)
                                 ->orderBy('published_at', 'desc')
                                 ->paginate(5);
+
+            if (!empty($articles)) {
+                $parseDown = new \Parsedown();
+                foreach ($articles as $key => $value) {
+                    $articles[$key]->content = $parseDown->text($value->content);
+                }
+            }
         } else {
             $categories = Category::with('tags')->get();
             $articles = array();

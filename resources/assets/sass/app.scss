@@ -127,6 +127,7 @@ body {
   }
 }
 
+/* 文章详情 */
 #article-detail {
   .image-block {
     margin: 20px auto;
@@ -164,6 +165,12 @@ body {
         padding: 0 10px;
         text-indent: 0;
       }
+    }
+  }
+
+  .content {
+    p {
+      line-height: 50px;
     }
   }
 }
@@ -297,7 +304,7 @@ body {
   }
 
   .category-article {
-    border-top: 1px solid #ccd0d2;
+    border-bottom: 1px solid #ccd0d2;
     padding: 0;
     margin-bottom: 10px;
 
@@ -317,6 +324,7 @@ body {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 3;
+      max-height: 90px;
     }
   }
 }
