@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row" style="border-top: 1px solid #00b5ad; border-bottom: 1px solid #00b5ad; min-height: 790px">
+    <div class="row" style="border-top: 1px solid #00b5ad; min-height: 790px">
         <div class="col-md-9" id="article">
             <ul class="list-group">
                 @foreach($articles as $article)

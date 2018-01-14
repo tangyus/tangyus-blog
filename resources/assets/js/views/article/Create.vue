@@ -34,7 +34,7 @@
                         <markdown-editor v-model="article.content" ref="markdownEditor" :configs="configs"></markdown-editor>
                     </el-form-item>
                     <el-form-item label="文章图片" prop="article_image">
-                        <image-upload :image_path="article.article_image" :files="articleFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
+                        <image-upload :image_path="article.article_image" :files="articleFileList" :upload_type="upload_type" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item label="是否原创">
                         <template>
@@ -72,6 +72,7 @@
                     status: '10',
                     is_original: '1'
                 },
+                upload_type: 'article',
                 categoryList: [],
                 tagList: [],
                 articleTags: [],

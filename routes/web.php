@@ -31,4 +31,4 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function 
 	})->where('path', '[\/\w\.-]*')->name('admin');
 });
 
-Route::post('upload', 'UploadController@fileUpload');
+Route::post('upload/{type}', 'UploadController@fileUpload');
