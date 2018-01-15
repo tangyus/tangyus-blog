@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class LoginController extends Controller
 {
@@ -38,6 +39,43 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function authenticateClient(Request $request) {
+        $credentials = $this->credentials($request);
+
+        $request->request->add([
+            'grant_type' => env('grant_type', 'password'),
+            'client_id' => env('client_id', '2'),
+            'client_secret' => env('client_secret', 'V6m0OJWhY2AgFMJBoWMeA8geQfT3befxJ2YRmlrk'),
+            'username' => $credentials['email'],
+            'password' => $credentials['password'],
+            'scope' => env('scope', '*')
+        ]);
+
+        $proxy = Request::create('oauth/token', 'POST');
+
+        $response = Route::dispatch($proxy);
+        dd($response);
+        return $response;
+    }
+
+    protected function authenticated(Request $request) {
+        return $this->authenticateClient($request);
+    }
+
+    protected function sendLoginResponse(Request $request) {
+        $this->clearLoginAttempts($request);
+
+        return $this->authenticated($request);
+    }
+
+    public function sendFailedLoginResponse(Request $request)
+    {
+        $msg = $request['errors'];
+        $code = $request['code'];
+
+        return $this->failed($msg, $code);
     }
 
     /**
