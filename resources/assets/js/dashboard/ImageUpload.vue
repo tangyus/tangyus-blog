@@ -55,7 +55,6 @@
             uploadAction() {
                 return '/upload/' + this.upload_type;
             },
-
             // 由于props数据只能单向从父组件到子组件，故定义一个计算属性接收父组件传递来的数据
             fileList() {
                 return this.files;
