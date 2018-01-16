@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -41,80 +42,79 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function authenticateClient(Request $request) {
-        $credentials = $this->credentials($request);
-
-        $request->request->add([
-            'grant_type' => env('grant_type', 'password'),
-            'client_id' => env('client_id', '2'),
-            'client_secret' => env('client_secret', 'V6m0OJWhY2AgFMJBoWMeA8geQfT3befxJ2YRmlrk'),
-            'username' => $credentials['email'],
-            'password' => $credentials['password'],
-            'scope' => env('scope', '*')
-        ]);
-
-        $proxy = Request::create('oauth/token', 'POST');
-
-        $response = Route::dispatch($proxy);
-        dd($response);
-        return $response;
-    }
-
-    protected function authenticated(Request $request) {
-        return $this->authenticateClient($request);
-    }
-
-    protected function sendLoginResponse(Request $request) {
-        $this->clearLoginAttempts($request);
-
-        return $this->authenticated($request);
-    }
-
-    public function sendFailedLoginResponse(Request $request)
-    {
-        $msg = $request['errors'];
-        $code = $request['code'];
-
-        return $this->failed($msg, $code);
-    }
-
-    /**
-     * 获取登录TOKEN
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-//    public function token(Request $request)
-//    {
-//        dd($request);
-//        $username = $request->get('username');
-//        $user = User::Where('email', $username)->first();
+	/**
+	 * 重写登录
+	 * @param Request $request
+	 * @return mixed
+	 */
+//	public function login(Request $request)
+//	{
+//		$validator = Validator::make($request->all(), [
+//			'email' => 'required|exists:users',
+//			'password' => 'required|between:6, 12'
+//		]);
 //
-//        if ($user && ($user->status == 0)) {
-//            throw  new UnauthorizedHttpException('', '账号已被禁用');
-//        }
+//		if ($validator->fails()) {
+//			$request->request->add([
+//				'errors' => $validator->errors()->toArray(),
+//				'code' => 401
+//			]);
 //
-//        $client = new Client();
-//        try {
-//            $request = $client->request('POST', request()->root() . '/api/oauth/token', [
-//                'form_params' => config('passport') + $request->only(array_keys($request->rules()))
-//            ]);
+//			return $this->sendFailedLoginResponse($request);
+//		}
 //
-//        } catch (RequestException $e) {
-//            throw  new UnauthorizedHttpException('', '账号验证失败');
-//        }
+//		$credentials = $this->credentials($request);
+//		if ($this->guard('api')->attempt($credentials, $request->has('remember'))) {
+//			return $this->sendLoginResponse($request);
+//		}
 //
-//        if ($request->getStatusCode() == 401) {
-//            throw  new UnauthorizedHttpException('', '账号验证失败');
-//        }
-//        return response()->json($request->getBody()->getContents());
+//		return $this->setStatusCode(401)->failed('登录失败');
 //    }
 
-//    public function logout()
-//    {
-//        if (Auth::guard('api')->check()) {
-//            Auth::guard('api')->user()->token()->delete();
-//        }
+//	public function logout(Request $request)
+//	{
+//		if (Auth::guard('api')->check()) {
+//			Auth::guard('api')->user()->token()->revoke();
+//		}
 //
-//        return response()->json(['message' => '登出成功', 'status_code' => 200, 'data' => null]);
+//		return $this->message('退出登录成功');
+//    }
+
+
+//    protected function authenticateClient(Request $request) {
+//        $credentials = $this->credentials($request);
+//
+//        $request->request->add([
+//            'grant_type' => env('grant_type', 'password'),
+//            'client_id' => env('client_id', '2'),
+//            'client_secret' => env('client_secret', 'uhJ1ixu3BEpPAO6ptDC7YNRibV214ShiX5mf1ohf'),
+//            'username' => $credentials['email'],
+//            'password' => $credentials['password'],
+//            'scope' => env('scope', '*')
+//        ]);
+//
+//        $proxy = Request::create('oauth/token', 'POST');
+//
+//        $response = Route::dispatch($proxy);
+////        return $response;
+//    }
+
+//    protected function authenticated(Request $request) {
+//        return $this->authenticateClient($request);
+//    }
+//
+//    protected function sendLoginResponse(Request $request) {
+//        $this->clearLoginAttempts($request);
+//
+//        return $this->authenticated($request);
+//    }
+//
+//    public function sendFailedLoginResponse(Request $request)
+//    {
+//        $msg = $request['errors'];
+//        $code = $request['code'];
+//
+//		dd($request['code']);
+//        return $this->failed($msg, $code);
 //    }
 }
