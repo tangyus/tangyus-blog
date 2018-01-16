@@ -8,10 +8,10 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/" title="tangyus">首页 <span class="sr-only">(current)</span></a></li>
                 <li><a href="{{ route('archive') }}" title="文章归档">文章归档</a></li>
-                <li><a href="#" title="学习笔记">学习笔记</a></li>
-                <li><a href="{{ route('categories') }}" title="文章分类">文章分类</a></li>
+                {{--<li><a href="#" title="学习笔记">学习笔记</a></li>--}}
+                {{--<li><a href="{{ route('categories') }}" title="文章分类">文章分类</a></li>--}}
                 <li><a href="{{ route('links') }}" title="友情链接">友情链接</a></li>
-                <li><a href="{{ route('about') }}" title="关于我">关于我</a></li>
+                {{--<li><a href="{{ route('about') }}" title="关于我">关于我</a></li>--}}
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
@@ -48,7 +48,7 @@
 
             <form class="navbar-form navbar-right">
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="你想找什么?">
+                    <input type="text" class="form-control" placeholder="你想找点什么?">
                 </div>
             </form>
         </div>

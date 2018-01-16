@@ -1,17 +1,17 @@
-<div class="panel text-center">
-    <div class="panel-body">
-        <div class="list-group">
-            <a href="{{ route('categories') }}" class="list-group-item" title="文章分类">文章分类</a>
-            @foreach($categories as $category)
-                <a href="{{ route('categories', $category->id) }}" class="list-group-item"
-                   title="{{ $category->name }}">
-                    {{ $category->name }}
-                    <span class="badge">{{ $category->article_count }}</span>
-                </a>
-            @endforeach
-        </div>
-    </div>
-</div>
+{{--<div class="panel text-center">--}}
+    {{--<div class="panel-body">--}}
+        {{--<div class="list-group">--}}
+            {{--<a href="{{ route('categories') }}" class="list-group-item" title="文章分类">文章分类</a>--}}
+            {{--@foreach($categories as $category)--}}
+                {{--<a href="{{ route('categories', $category->id) }}" class="list-group-item"--}}
+                   {{--title="{{ $category->name }}">--}}
+                    {{--{{ $category->name }}--}}
+                    {{--<span class="badge">{{ $category->article_count }}</span>--}}
+                {{--</a>--}}
+            {{--@endforeach--}}
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 
 <div class="panel text-center">
     <div class="panel-body">

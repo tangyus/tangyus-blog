@@ -21,7 +21,7 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <image-upload :image_path="link.link_image" :files="linkFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
+                        <image-upload :image_path="link.link_image" :files="linkFileList" :upload_type="upload_type" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="saveLink">保存修改</el-button>
@@ -46,6 +46,7 @@
                     site: '',
                     link_image: ''
                 },
+                upload_type: 'link',
                 linkFileList: [],
                 site_type: '',
                 rules: {
@@ -55,9 +56,6 @@
                     ],
                     site: [
                         { required: true, message: '请输入友链地址', trigger: 'blur' }
-                    ],
-                    link_image: [
-                        { required: true, message: '请上传友链图片', trigger: 'blur' }
                     ]
                 }
             }
@@ -77,6 +75,17 @@
                         }
                         self.$http.post('/link', self.link)
                                 .then(function (response) {
+                                    // 未通过后台表单验证时，显示表单验证错误信息
+                                    if (response.data.errors) {
+                                        for (var i in response.data.errors) {
+                                            self.$message({
+                                                message: response.data.errors[i][0],
+                                                type: 'error',
+                                                showClose: true
+                                            });
+                                        }
+                                        return false;
+                                    }
                                     self.$message({
                                         message: response.data.message,
                                         type: response.data.success ? 'success' : 'error',

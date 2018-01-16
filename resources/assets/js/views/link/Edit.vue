@@ -21,7 +21,7 @@
                         </div>
                     </el-form-item>
                     <el-form-item label="友链图片" prop="link_image">
-                        <image-upload :image_path="link.link_image" :files="linkFileList" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
+                        <image-upload :image_path="link.link_image" :files="linkFileList" :upload_type="upload_type" @uploadSuccessPath="getUploadImagePath" @uploadSuccessFiles="getUploadFiles"></image-upload>
                     </el-form-item>
                     <el-form-item label="更新时间">
                         <el-input v-model="link.updated_at" placeholder="更新时间" disabled clearable></el-input>
@@ -45,6 +45,7 @@
         data() {
             return {
                 link: {},
+                upload_type: 'link',
                 linkFileList: [],
                 site_type: '',
                 rules: {
@@ -54,9 +55,6 @@
                     ],
                     site: [
                         { required: true, message: '请输入友链地址', trigger: 'blur' }
-                    ],
-                    link_image: [
-                        { required: true, message: '请上传友链图片', trigger: 'blur' }
                     ]
                 },
             }
@@ -107,6 +105,11 @@
                                         type: response.data.success ? 'success' : 'error',
                                         showClose: true
                                     });
+                                    if (response.data.success) {
+                                        self.$router.push({
+                                            path: '/admin/links'
+                                        })
+                                    }
                                 })
                     } else {
                         return false;

@@ -3,7 +3,7 @@
         <el-upload
                 class="upload-demo"
                 ref="upload"
-                action="/upload"
+                :action="uploadAction"
                 :headers="headers"
                 :before-upload="uploadFile"
                 :on-success="successHandle"
@@ -36,6 +36,9 @@
             },
             files: {
                 type: Array
+            },
+            upload_type: {
+                type: String
             }
         },
         data() {
@@ -49,7 +52,9 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             },
-
+            uploadAction() {
+                return '/upload/' + this.upload_type;
+            },
             // 由于props数据只能单向从父组件到子组件，故定义一个计算属性接收父组件传递来的数据
             fileList() {
                 return this.files;
@@ -103,6 +108,9 @@
              */
             successHandle(response, file, fileList) {
                 if (response.success) {
+                    console.log(response);
+                    console.log(file);
+                    console.log(fileList);
                     this.uploadErrorMessage = [];
 
                     this.fileList.push({
