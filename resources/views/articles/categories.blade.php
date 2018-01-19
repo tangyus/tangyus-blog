@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="categories" class="row" style="border-top: 1px solid rgb(0, 181, 173)">
+    <div id="categories" class="row">
         @foreach($categories as $category)
             <div class="category-item col-md-3">
                 <div class="title">

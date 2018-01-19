@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Link;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class IndexController extends Controller
@@ -19,6 +20,7 @@ class IndexController extends Controller
 		$parseDown = new \Parsedown();
 		foreach ($articles as $key => $value) {
 			$articles[$key]->content = $parseDown->text($articles[$key]->content);
+			$articles[$key]->published_at = Carbon::parse($articles[$key]->published_at);
 		}
 		$categories = Category::all();
 		$links = Link::orderBy('rank', 'desc')->take(5)->get();

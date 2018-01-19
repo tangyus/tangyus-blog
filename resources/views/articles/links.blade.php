@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="links" class="row" style="border-top: 1px solid rgb(0, 181, 173)">
+    <div id="links" class="row">
         @if(count($links) > 0)
             <h4>友情链接</h4>
             <div class="link-item col-md-6">

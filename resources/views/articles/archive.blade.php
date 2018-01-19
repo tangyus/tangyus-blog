@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="archive">
-        <ul class="archive-item">
+        <ul class="archive-item col-md-9" >
             @foreach($articles as $article)
                 <li>
                     <div class="desc">
