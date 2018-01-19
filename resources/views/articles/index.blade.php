@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="row" style="border-top: 1px solid #00b5ad; min-height: 790px">
+    <div class="row" style="border-top: 1px solid rgb(211, 224, 233); min-height: 790px">
         <div class="col-md-9" id="article">
             <ul class="list-group">
                 @foreach($articles as $article)
@@ -17,17 +17,17 @@
                                 </a>
                             </div>
                             <div class="col-md-8">
-                                <h2 class="title">
+                                <h3 class="title">
                                     <a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a>
-                                </h2>
+                                </h3>
                                 <div class="content">
                                     {!! $article->content !!}
                                 </div>
                             </div>
                             <div class="col-md-8 publish-time">
                                 <p>
-                                    发布于：<span>{{ $article->published_at }}</span>
-                                    阅读：<span>{{ $article->view_count }}</span>
+                                    发布于<span>{{ $article->published_at->toDateString() }}</span>
+                                    {{--阅读：<span>{{ $article->view_count }}</span>--}}
                                     <a class="btn btn-primary btn-sm pull-right" href="{{ $article->link() }}" role="button" style="color: #fff;">阅读更多</a>
                                 </p>
                             </div>

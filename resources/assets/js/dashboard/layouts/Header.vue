@@ -25,6 +25,7 @@
         width: 100%;
         height: 60px;
         transition: padding .3s;
+        z-index: 2;
 
         .menu-nav {
             height: 60px;

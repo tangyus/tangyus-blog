@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token()  }}">
 
-    <title>@yield('title', 'tangyus') - tangyus</title>
+    <title>tangyug个人博客 - @yield('title', '首页')</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
@@ -39,5 +39,16 @@
 //            }
 //        })
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#header input').on('click', function () {
+                $(this).animate({'width': '250px'}, 'slow');
+            })
+            $('#header input').on('blur', function () {
+                $(this).animate({'width': '180px'}, 'slow');
+            })
+        });
+    </script>
+    @yield('script')
 </body>
 </html>
