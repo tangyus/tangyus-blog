@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
+use Laravel\Passport\RouteRegistrar;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Passport::routes();
+		// 目前只需要提供一个获取token的路由
+		// 多平台认证时，请使用Passport::routes();
+        Passport::routes(function (RouteRegistrar $routeRegistrar) {
+			$routeRegistrar->forAccessTokens();
+		}, ['prefix' => 'api/oauth']);
     }
 }
