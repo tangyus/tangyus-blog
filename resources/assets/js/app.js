@@ -41,6 +41,9 @@ http.defaults.headers.common = {
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
     'X-Requested-With': 'XMLHttpRequest'
 };
+if (window.localStorage.token_type && window.localStorage.access_token) {
+	http.defaults.headers.common['Authorization'] = window.localStorage.token_type + ' ' + window.localStorage.access_token
+}
 
 // 响应时拦截
 http.interceptors.response.use(function (response) {

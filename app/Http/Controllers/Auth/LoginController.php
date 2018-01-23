@@ -7,6 +7,7 @@ use App\Http\Controllers\Traits\ProxyHelpers;
 use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\UnauthorizedException;
 
@@ -58,15 +59,12 @@ class LoginController extends Controller
 			return failed(['errors' => $validator->errors()->toArray()]);
 		}
 
-		$user = User::where('email', $request->input('email'))->first();
-
-		if (!$user) {
-			throw new UnauthorizedException('此用户不存在');
-		}
-		dd($user);
-
 		$tokens = $this->authenticate();
 
-		return succeed(['token' => $tokens, 'user' => $user->toArray()]);
+		if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+			return succeed(['token' => $tokens, 'user' => Auth::user()]);
+		}
+
+		return failed('登录失败');
     }
 }
