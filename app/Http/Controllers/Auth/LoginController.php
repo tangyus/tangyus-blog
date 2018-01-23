@@ -47,25 +47,26 @@ class LoginController extends Controller
 	 * @param Request $request
 	 * @return mixed
 	 */
-//	public function login(Request $request)
-//	{
-//		$validator = Validator::make($request->all(), [
-//			'email' => 'required|exists:users',
-//			'password' => 'required|between:6, 12'
-//		]);
-//
-//		if ($validator->fails()) {
-//			return failed(['errors' => $validator->errors()->toArray()]);
-//		}
-//
-//		$user = User::where('email', $request->input('email'))->first();
-//
-//		if (!$user) {
-//			throw new UnauthorizedException('此用户不存在');
-//		}
-//
-//		$tokens = $this->authenticate();
-//
-//		return succeed(['token' => $tokens, 'user' => $user->toArray()]);
-//    }
+	public function login(Request $request)
+	{
+		$validator = Validator::make($request->all(), [
+			'email' => 'required|exists:users',
+			'password' => 'required|between:6, 12'
+		]);
+
+		if ($validator->fails()) {
+			return failed(['errors' => $validator->errors()->toArray()]);
+		}
+
+		$user = User::where('email', $request->input('email'))->first();
+
+		if (!$user) {
+			throw new UnauthorizedException('此用户不存在');
+		}
+		dd($user);
+
+		$tokens = $this->authenticate();
+
+		return succeed(['token' => $tokens, 'user' => $user->toArray()]);
+    }
 }

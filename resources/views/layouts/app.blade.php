@@ -10,6 +10,11 @@
     <title>tangyug个人博客 - @yield('title', '首页')</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <script type="text/javascript">
+        window.Laravel = {
+            csrfToken: "{{ csrf_token() }}"
+        }
+    </script>
 </head>
 <body>
     <div id="app">
@@ -25,20 +30,7 @@
     <script src="/js/manifest.js"></script>
     <script src="/js/vendor.js"></script>
     <script type="text/javascript" src="{{ mix('js/home.js') }}"></script>
-    <script type="text/javascript">
-        var username = $('#username').val();
-        var password = $('#password').val();
 
-//        $.ajax({
-//            type: 'post',
-//            url: '/oauth/token',
-//            dataType: 'json',
-//            data: {
-//                'grant_type': 'password',
-//                'client_id': ''
-//            }
-//        })
-    </script>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#header input').on('click', function () {

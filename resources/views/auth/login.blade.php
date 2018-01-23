@@ -8,8 +8,9 @@
                 <div class="panel-heading">登录</div>
 
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('login') }}">
-                        {{ csrf_field() }}
+                    {{--<form class="form-horizontal" method="POST" action="{{ route('login') }}">--}}
+                    {{--<form class="form-horizontal" id="login">--}}
+                        {{--{{ csrf_field() }}--}}
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">邮箱地址</label>
@@ -51,7 +52,7 @@
 
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" id="login">
                                     登录
                                 </button>
 
@@ -60,10 +61,48 @@
                                 </a>
                             </div>
                         </div>
-                    </form>
+                    {{--</form>--}}
                 </div>
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
+                }
+            });
+            console.log(window.Laravel.csrfToken);
+
+            $('#login').click(function () {
+                console.log(21321);
+                var username = $('#username').val();
+                var password = $('#password').val();
+                $.ajax({
+                    type: 'post',
+                    url: '/login',
+                    dataType: 'json',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function (response) {
+                        if (response.status) {
+                            console.log(response.respond);
+                        } else {
+                            alert(response.respond)
+                        }
+                    },
+                    error: function (xhr,status,error) {
+
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
