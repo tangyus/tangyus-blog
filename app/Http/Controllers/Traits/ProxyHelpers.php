@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Traits;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\UnauthorizedException;
 
 trait ProxyHelpers
@@ -30,6 +32,16 @@ trait ProxyHelpers
 		}
 
 		if ($respond->getStatusCode() !== 401) {
+			try {
+				DB::table('oauth_access_tokens')->where('expires_at', '<', Carbon::now())->delete();
+
+				DB::table('oauth_refresh_tokens')
+					->where('expires_at', '<', Carbon::now())
+					->delete();
+			} catch (QueryException $queryException) {
+				throw new QueryException('清除token错误');
+			}
+
 			return json_decode($respond->getBody()->getContents(), true);
 		}
 

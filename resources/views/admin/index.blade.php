@@ -7,7 +7,7 @@
 
     <meta name="csrf-token" content="{{ csrf_token()  }}">
 
-    <title>@yield('title', 'tangyus') - tangyus</title>
+    <title>tangyug个人博客 - @yield('title', '后台')</title>
 
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">

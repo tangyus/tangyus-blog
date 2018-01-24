@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\ProxyHelpers;
-use App\Models\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\UnauthorizedException;
 
 class LoginController extends Controller
 {
@@ -53,10 +51,15 @@ class LoginController extends Controller
 		$validator = Validator::make($request->all(), [
 			'email' => 'required|exists:users',
 			'password' => 'required|between:6, 12'
+		], [
+			'email.required' => '请填写邮箱',
+			'email.exists' => '邮箱不存在',
+			'password.required' => '请填写密码',
+			'password.between' => '密码长度为6-12个字符'
 		]);
 
 		if ($validator->fails()) {
-			return failed(['errors' => $validator->errors()->toArray()]);
+			return failed(['errors' => $validator->errors()->all()]);
 		}
 
 		$tokens = $this->authenticate();

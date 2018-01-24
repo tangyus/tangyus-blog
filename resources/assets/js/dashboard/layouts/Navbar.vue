@@ -43,6 +43,8 @@
             margin-top: 100px;
 
             .el-menu {
+                border-right: none;
+
                 .el-menu-vertical-demo:not(.el-menu--collapse) {
                     width: 200px;
                     min-height: 400px;

@@ -4,14 +4,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
+                <div id="errors" class="alert alert-danger alert-dismissible" role="alert" style="display: none;">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <ul>
+                    </ul>
+                </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">登录</div>
 
                     <div class="panel-body">
-                        {{--<form class="form-horizontal" method="POST" action="{{ route('login') }}">--}}
-                        <form class="form-horizontal" id="login">
-                            {{--{{ csrf_field() }}--}}
-
+                        <form class="form-horizontal">
                             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                                 <label for="email" class="col-md-4 control-label">邮箱地址</label>
 
@@ -74,12 +78,6 @@
 @section('script')
     <script type="text/javascript">
         $(document).ready(function () {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': window.Laravel.csrfToken
-                }
-            });
-
             $('#login').click(function () {
                 event.preventDefault();
 
@@ -97,14 +95,16 @@
                         if (response.status && response.data) {
                             window.localStorage.token_type = response.data.token.token_type;
                             window.localStorage.access_token = response.data.token.access_token;
-                            console.log(window.localStorage.token);
-                            history.go(-1);
-                        } else {
-                            alert(response.respond)
-                        }
-                    },
-                    error: function (xhr, status, error) {
 
+                            window.location.href = '/';
+                        } else {
+                            if (response.data.errors) {
+                                for (var i in response.data.errors) {
+                                    $('#errors ul').append('<li>'+ response.data.errors[i] +'</li>');
+                                }
+                                $('#errors').css('display', 'block');
+                            }
+                        }
                     }
                 });
             });

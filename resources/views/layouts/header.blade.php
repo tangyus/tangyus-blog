@@ -1,16 +1,16 @@
 <nav class="navbar navbar-default" id="header">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/" title="tangyus">tangyus</a>
+            <a class="navbar-brand" href="/" title="tangyug">tangyug</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="/" title="tangyus">首页 <span class="sr-only">(current)</span></a></li>
-                <li><a href="{{ route('archive') }}" title="文章归档">文章归档</a></li>
+                <li><a href="{{ route('archive') }}" title="文章归档">归档</a></li>
                 {{--<li><a href="#" title="学习笔记">学习笔记</a></li>--}}
                 {{--<li><a href="{{ route('categories') }}" title="文章分类">文章分类</a></li>--}}
-                <li><a href="{{ route('links') }}" title="友情链接">友情链接</a></li>
+                <li><a href="{{ route('links') }}" title="友情链接">友链</a></li>
                 {{--<li><a href="{{ route('about') }}" title="关于我">关于我</a></li>--}}
             </ul>
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" style="position: relative; min-height: 100%;">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -35,10 +35,16 @@
         $(document).ready(function () {
             $('#header input').on('click', function () {
                 $(this).animate({'width': '250px'}, 'slow');
-            })
+            });
             $('#header input').on('blur', function () {
                 $(this).animate({'width': '180px'}, 'slow');
-            })
+            });
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': window.Laravel.csrfToken
+                }
+            });
         });
     </script>
     @yield('script')
