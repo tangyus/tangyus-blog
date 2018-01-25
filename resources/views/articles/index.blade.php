@@ -17,17 +17,18 @@
                                 </a>
                             </div>
                             <div class="col-md-8">
-                                <h3 class="title">
+                                <h2 class="title">
                                     <a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a>
-                                </h3>
+                                </h2>
                                 <div class="content">
                                     {!! $article->content !!}
                                 </div>
                             </div>
                             <div class="col-md-8 publish-time">
                                 <p>
-                                    发布于<span>{{ $article->published_at->toDateString() }}</span>
-                                    {{--阅读：<span>{{ $article->view_count }}</span>--}}
+                                    发布于<span class="category">{{ $article->published_at->toDateString() }}</span>
+                                    浏览数<span class="category">{{ $article->view_count + cache('article_view_count_' . $article->id) }}</span>
+                                    分类<a class="category" href="{{ route('categories', $article->category->id) }}" title="{{ $article->category->name }}" target="_blank">{{ $article->category->name }}</a>
                                     <a class="btn btn-primary btn-sm pull-right" href="{{ $article->link() }}" role="button" style="color: #fff;">阅读更多</a>
                                 </p>
                             </div>

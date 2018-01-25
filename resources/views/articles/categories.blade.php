@@ -7,7 +7,7 @@
                 <div class="title">
                     <p class="name">
                         <a href="{{ route('categories', $category->id) }}" title="{{ $category->name }}">{{ $category->name }}</a>
-                        <span class="badge" title="3">{{ $category->article_count }}</span>
+                        <span class="badge" title="该分类下共有 {{ $category->article_count }} 篇文章">{{ $category->article_count }}</span>
                     </p>
                     <p class="desc">{{ $category->desc }}</p>
                 </div>

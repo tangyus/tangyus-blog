@@ -10,14 +10,11 @@
             <div class="article-desc">
                 <h3>{{ $article->title }}</h3>
                 <p>
-                    发表于:
-                    <span>
-                        {{ $article->published_at }}
-                    </span>
-                    <span>分类:</span>
+                    发表于<span>{{ $article->published_at }}</span>
+                    <span>分类</span>
                     <a href="{{ route('categories', $article->category->id) }}"
                        title="{{ $article->category->name }}">{{ $article->category->name }}</a>
-                    <span>标签:</span>
+                    <span>标签</span>
                     @foreach($tags as $tag)
                         <a href="#"># {{ $tag->name }}</a>
                     @endforeach

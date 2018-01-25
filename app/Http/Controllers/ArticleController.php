@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Handlers\ViewCountCacheHandler;
 use App\Models\Article;
 use App\Models\Category;
 use App\Models\Link;
@@ -10,15 +11,19 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    /**
-     * 文章详情页面
-     * @param Request $request
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
-	public function index(Request $request, $id)
+	/**
+	 * 文章详情页面
+	 * @param Request $request
+	 * @param ViewCountCacheHandler $handler
+	 * @param $id
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
+	 */
+	public function index(Request $request, ViewCountCacheHandler $handler, $id)
 	{
 		$article = Article::with(['category', 'articleTags'])->findOrFail($id);
+
+		// 处理文章浏览量缓存
+		$handler->incrementAndStoreViewCount($article);
 
         // markdown解析
 		$parseDown = new \Parsedown();
