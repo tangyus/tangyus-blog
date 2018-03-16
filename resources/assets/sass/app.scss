@@ -126,11 +126,15 @@ body {
   .content {
     overflow: hidden;
     line-height: 30px;
-    font-size: 16px;
+    font-size: 14px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 4;
     max-height: 120px;
+
+    a {
+      color: #fd4c5b;
+    }
   }
 
   .pagination {

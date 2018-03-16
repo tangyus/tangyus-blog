@@ -16,10 +16,10 @@
                                     @endif
                                 </a>
                             </div>
-                            <div class="col-md-8">
-                                <h2 class="title">
+                            <div class="col-md-8" style="margin-top: 20px;">
+                                <h3 class="title">
                                     <a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a>
-                                </h2>
+                                </h3>
                                 <div class="content">
                                     {!! $article->content !!}
                                 </div>
