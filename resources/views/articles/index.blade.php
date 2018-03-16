@@ -16,7 +16,7 @@
                                     @endif
                                 </a>
                             </div>
-                            <div class="col-md-8" style="margin-top: 20px;">
+                            <div class="col-md-8" style="margin-top: 10px;">
                                 <h3 class="title">
                                     <a href="{{ $article->link() }}" title="{{ $article->title }}">{{ $article->title }}</a>
                                 </h3>
