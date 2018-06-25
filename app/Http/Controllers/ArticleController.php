@@ -11,16 +11,15 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-	/**
+	/*
 	 * 文章详情页面
 	 * @param Request $request
 	 * @param ViewCountCacheHandler $handler
 	 * @param $id
-	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
 	 */
 	public function index(Request $request, ViewCountCacheHandler $handler, $id)
 	{
-		$article = Article::with(['category', 'articleTags'])->findOrFail($id);
+		$article = Article::with(['category', 'articleTags'])->where('status', 20)->findOrFail($id);
 
 		// 处理文章浏览量缓存
 		$handler->incrementAndStoreViewCount($article);

@@ -4,7 +4,7 @@
             <h3>用户管理</h3>
         </div>
         <div class="operate" slot="buttons">
-            <router-link to="/admin/users/create" class="btn btn-primary">创建用户<i class="el-icon-edit-outline el-icon-right"></i></router-link>
+            <router-link to="/admin/users/create" class="btn btn-primary"><i class="el-icon-edit"></i> 创建</router-link>
         </div>
         <el-table
                 :data="userList"
@@ -48,17 +48,18 @@
                     <el-button
                             size="mini"
                             type="primary"
-                            @click="editUser(scope.row)">编辑</el-button>
+                            @click="editUser(scope.row)"><i class="el-icon-edit-outline"></i> 编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="deleteUser(scope.row)">删除</el-button>
+                            @click="deleteUser(scope.row)"><i class="el-icon-delete"></i> 删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
 
         <div class="block" v-if="totalPage >= 1">
             <el-pagination
+                    background
                     @current-change="handleCurrentChange"
                     :current-page.sync="currentPage"
                     :page-size="pageSize"

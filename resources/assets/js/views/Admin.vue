@@ -53,9 +53,9 @@
         }
 
         .block {
-            text-align: center;
             font-size: 16px;
             margin-bottom: 75px;
+            padding: 15px 0;
         }
     }
 

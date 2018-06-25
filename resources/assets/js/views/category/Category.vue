@@ -4,7 +4,7 @@
             <h3>分类管理</h3>
         </div>
         <div class="operate" slot="buttons">
-            <router-link to="/admin/categories/create" class="btn btn-primary">创建分类<i class="el-icon-edit-outline el-icon-right"></i></router-link>
+            <router-link to="/admin/categories/create" class="btn btn-primary"><i class="el-icon-edit"></i> 创建</router-link>
         </div>
 
         <el-table
@@ -36,11 +36,11 @@
                     <el-button
                             size="mini"
                             type="primary"
-                            @click="editCategory(scope.row)">编辑</el-button>
+                            @click="editCategory(scope.row)"><i class="el-icon-edit-outline"></i> 编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="deleteCategory(scope.row)">删除</el-button>
+                            @click="deleteCategory(scope.row)"><i class="el-icon-delete"></i> 删除</el-button>
                 </template>
             </el-table-column>
         </el-table>

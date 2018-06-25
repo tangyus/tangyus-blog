@@ -4,7 +4,7 @@
             <h3>文章管理</h3>
         </div>
         <div class="operate" slot="buttons">
-            <router-link to="/admin/articles/create" class="btn btn-primary">创建文章<i class="el-icon-edit-outline el-icon-right"></i></router-link>
+            <router-link to="/admin/articles/create" class="btn btn-primary"><i class="el-icon-edit"></i> 创建</router-link>
         </div>
 
         <el-table
@@ -57,11 +57,11 @@
                     <el-button
                             size="mini"
                             type="primary"
-                            @click="editArticle(scope.row)">编辑</el-button>
+                            @click="editArticle(scope.row)"><i class="el-icon-edit-outline"></i> 编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="deleteArticle(scope.row)">删除</el-button>
+                            @click="deleteArticle(scope.row)"><i class="el-icon-delete"></i> 删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -86,7 +86,8 @@
                 currentPage: 1,
                 totalPage: 0,
                 total: 0,
-                pageSize: 10
+                pageSize: 10,
+                pageTitle: '文章管理'
             }
         },
         created () {

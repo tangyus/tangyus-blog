@@ -4,7 +4,7 @@
             <h3>标签管理</h3>
         </div>
         <div class="operate" slot="buttons">
-            <router-link to="/admin/tags/create" class="btn btn-primary">创建标签<i class="el-icon-edit-outline el-icon-right"></i></router-link>
+            <router-link to="/admin/tags/create" class="btn btn-primary"><i class="el-icon-edit"></i> 创建</router-link>
         </div>
 
         <el-table
@@ -32,11 +32,11 @@
                     <el-button
                             size="mini"
                             type="primary"
-                            @click="editTag(scope.row)">编辑</el-button>
+                            @click="editTag(scope.row)"><i class="el-icon-edit-outline"></i> 编辑</el-button>
                     <el-button
                             size="mini"
                             type="danger"
-                            @click="deleteTag(scope.row)">删除</el-button>
+                            @click="deleteTag(scope.row)"><i class="el-icon-delete"></i> 删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
