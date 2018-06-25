@@ -144,6 +144,9 @@ body {
 
 /* 文章详情 */
 #article-detail {
+  img {
+    max-width: 100%;
+  }
   .image-block {
     margin: 20px auto;
   }
